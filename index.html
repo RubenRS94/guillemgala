@@ -1,0 +1,1323 @@
+<!-- =====================================================================
+  GUILLEM GALABERT GUIU · Landing para WordPress (bloque HTML personalizado)
+  - Todo el diseño está aislado dentro de <div id="gg"> para no chocar con el tema.
+  - Usa una plantilla de página "Ancho completo" / "Lienzo" sin cabecera del tema.
+  - Para cambiar el teléfono de WhatsApp y el calendario de salidas,
+    busca el bloque "CONFIGURACIÓN RÁPIDA" al principio del <script>.
+  - Las fotos son de ejemplo (Unsplash): sustitúyelas por las de Guillem
+    subiéndolas a la biblioteca de medios y cambiando las URL.
+====================================================================== -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap');
+
+#gg{
+  --nieve:#F5F8FA; --hielo:#E2EEF4; --hielo2:#C9DFEA;
+  --glaciar:#1F74A6; --glaciar-h:#175C86; --serac:#7FD0EE; --serac-h:#A9E1F5;
+  --noche:#0D1C2B; --noche2:#14293D; --noche3:#1C3650;
+  --tinta:#13202C; --roca:#4A5C6D; --niebla:#9DB2C3;
+  --f:'Archivo','Arial Narrow',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --hh:64px;
+  font-family:var(--f); color:var(--tinta); background:var(--nieve);
+  font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  position:relative; overflow-x:clip; text-align:left;
+}
+#gg *,#gg *::before,#gg *::after{box-sizing:border-box;margin:0;padding:0}
+#gg img{display:block;max-width:100%;border:0}
+#gg a{color:inherit;text-decoration:none}
+#gg button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-transform:none;letter-spacing:normal;box-shadow:none}
+#gg ul,#gg ol{list-style:none}
+#gg :focus-visible{outline:2px solid var(--serac);outline-offset:3px;border-radius:6px}
+#gg .gg-x{opacity:0}
+#gg .gg-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Base de maquetación ---------- */
+#gg .gg-wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 1.25rem}
+#gg .gg-sec{position:relative;padding:4.5rem 0}
+#gg .gg-dark{background:var(--noche);color:#E8F1F7}
+#gg .gg-ice{background:var(--hielo)}
+#gg .gg-head{max-width:44rem;margin-bottom:2.5rem;position:relative;z-index:1}
+#gg .gg-h2{font-stretch:62%;font-weight:800;text-transform:uppercase;font-size:clamp(2.7rem,10.5vw,5.25rem);line-height:.93;letter-spacing:.004em;color:var(--noche);margin-bottom:1rem}
+#gg .gg-dark .gg-h2{color:#fff}
+#gg .gg-lead{font-size:1.06rem;color:var(--roca);max-width:38rem}
+#gg .gg-dark .gg-lead{color:var(--niebla)}
+#gg .gg-topo{position:absolute;inset:0;width:100%;height:100%;color:var(--serac);opacity:.13;pointer-events:none}
+
+/* ---------- Botones ---------- */
+#gg .gg-btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;min-height:48px;padding:.8rem 1.45rem;border-radius:999px;font-weight:650;font-size:.98rem;line-height:1.1;text-align:center;transition:background .25s,color .25s,border-color .25s,transform .25s var(--ease)}
+#gg .gg-btn svg{width:18px;height:18px;flex-shrink:0}
+#gg .gg-btn-p{background:var(--glaciar);color:#fff}
+#gg .gg-btn-p:hover{background:var(--glaciar-h);transform:translateY(-1px)}
+#gg .gg-dark .gg-btn-p,#gg .gg-hero .gg-btn-p,#gg .gg-mnav .gg-btn-p,#gg .gg-hdr .gg-btn-p{background:var(--serac);color:var(--noche)}
+#gg .gg-dark .gg-btn-p:hover,#gg .gg-hero .gg-btn-p:hover,#gg .gg-hdr .gg-btn-p:hover{background:var(--serac-h)}
+#gg .gg-btn-g{border:1.5px solid rgba(255,255,255,.5);color:#fff}
+#gg .gg-btn-g:hover{background:rgba(255,255,255,.1);border-color:#fff}
+#gg .gg-btn-sm{min-height:42px;padding:.6rem 1.1rem;font-size:.9rem}
+#gg .gg-btn-wa{background:#25D366;color:#fff}
+#gg .gg-btn-wa:hover{background:#1EBE5A}
+#gg .gg-link-btn{display:inline-flex;align-items:center;gap:.35rem;min-height:44px;font-weight:650;font-size:.94rem;color:var(--glaciar)}
+#gg .gg-dark .gg-link-btn{color:var(--serac)}
+#gg .gg-link-btn svg{width:16px;height:16px;transition:transform .3s var(--ease)}
+#gg .gg-link-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+#gg .gg-more{height:0;overflow:hidden;transition:height .45s var(--ease)}
+#gg .gg-more-in{padding-top:.75rem}
+
+/* ---------- Cabecera ---------- */
+#gg .gg-hdr{position:fixed;top:0;left:0;right:0;z-index:900;height:var(--hh);color:#fff;transition:background .35s,box-shadow .35s}
+body.admin-bar #gg .gg-hdr{top:46px}
+@media(min-width:783px){body.admin-bar #gg .gg-hdr{top:32px}}
+#gg .gg-hdr.solid{background:rgba(13,28,43,.93);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(127,208,238,.12)}
+#gg .gg-hdr-in{height:100%;max-width:1380px;margin:0 auto;padding:0 1.1rem;display:flex;align-items:center;gap:.6rem}
+#gg .gg-prog{position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--serac);transform:scaleX(0);transform-origin:left}
+#gg .gg-logo{display:flex;align-items:center;gap:.6rem;margin-right:auto;min-width:0}
+#gg .gg-logo svg{width:34px;height:26px;flex-shrink:0}
+#gg .gg-logo-t{display:flex;flex-direction:column;line-height:1;min-width:0;overflow:hidden}
+#gg .gg-logo-t b,#gg .gg-logo-t small{overflow:hidden;text-overflow:ellipsis}
+#gg .gg-logo-t b{font-stretch:62%;font-weight:800;text-transform:uppercase;font-size:1.32rem;letter-spacing:.02em;white-space:nowrap}
+#gg .gg-logo-t small{font-size:.7rem;font-weight:500;color:var(--serac);margin-top:.2rem;white-space:nowrap}
+#gg .gg-nav{display:none}
+#gg .gg-nav a{font-size:.93rem;font-weight:550;padding:.5rem .75rem;border-radius:999px;color:rgba(255,255,255,.85);transition:color .2s,background .2s}
+#gg .gg-nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
+#gg .gg-hdr-cta{display:none}
+#gg .gg-lang{position:relative}
+#gg .gg-lang-btn{display:flex;align-items:center;gap:.35rem;min-height:40px;padding:0 .7rem;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);font-size:.85rem;font-weight:650}
+#gg .gg-lang-btn svg{width:16px;height:16px}
+#gg .gg-lang-menu{position:absolute;right:0;top:calc(100% + 8px);min-width:160px;background:#fff;color:var(--noche);border-radius:14px;padding:.4rem;box-shadow:0 18px 40px rgba(13,28,43,.28);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .2s,visibility .2s}
+#gg .gg-lang.open .gg-lang-menu{opacity:1;visibility:visible;transform:none}
+#gg .gg-lang-menu button{display:flex;width:100%;justify-content:space-between;align-items:center;padding:.65rem .8rem;border-radius:9px;font-size:.95rem;font-weight:550;text-align:left}
+#gg .gg-lang-menu button:hover{background:var(--hielo)}
+#gg .gg-lang-menu button[aria-current="true"]{color:var(--glaciar)}
+#gg .gg-lang-menu button[aria-current="true"]::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--glaciar)}
+#gg .gg-burger{width:44px;height:44px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px}
+#gg .gg-burger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:transform .3s var(--ease),opacity .2s}
+#gg .gg-burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+#gg .gg-burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+#gg .gg-burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+#gg .gg-mnav{position:fixed;inset:0;z-index:890;background:var(--noche);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--hh) + 1.5rem) 1.5rem 2rem;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;overflow:hidden}
+#gg .gg-mnav.open{opacity:1;visibility:visible}
+#gg .gg-mnav nav{position:relative;display:flex;flex-direction:column;gap:.15rem;margin-bottom:2rem}
+#gg .gg-mnav nav a{font-stretch:62%;font-weight:800;text-transform:uppercase;font-size:2.7rem;line-height:1.1;padding:.15rem 0}
+#gg .gg-mnav .gg-btn{position:relative;align-self:flex-start}
+
+/* ---------- Altímetro lateral (solo pantallas grandes) ---------- */
+#gg .gg-rail{display:none}
+
+/* ---------- Hero ---------- */
+#gg .gg-hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;color:#fff;background:var(--noche);overflow:hidden}
+#gg .gg-hero-media{position:absolute;inset:-8% 0 0 0;background:linear-gradient(170deg,#1C3650,#0D1C2B)}
+#gg .gg-hero-media img{width:100%;height:100%;object-fit:cover;object-position:50% 35%;will-change:transform}
+#gg .gg-hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,28,43,.6) 0%,rgba(13,28,43,.12) 32%,rgba(13,28,43,.7) 72%,#0D1C2B 100%)}
+#gg .gg-hero .gg-topo{opacity:.2}
+#gg .gg-hero-in{position:relative;z-index:2;padding-top:calc(var(--hh) + 3rem);padding-bottom:3.25rem}
+#gg .gg-hero-kicker{display:flex;align-items:center;gap:.55rem;font-size:.93rem;font-weight:550;color:var(--serac);margin-bottom:1.1rem;max-width:30rem}
+#gg .gg-hero-kicker svg{width:18px;height:14px;flex-shrink:0}
+#gg .gg-hero-h{font-stretch:62%;font-weight:800;text-transform:uppercase;font-size:clamp(3.6rem,min(18.5vw,17vh),10rem);line-height:.88;letter-spacing:.005em;margin-bottom:1.4rem}
+#gg .gg-hero-h span{display:block}
+#gg .gg-outline{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.92)}
+#gg .gg-hero-sub{font-size:1.08rem;color:rgba(232,241,247,.88);max-width:32rem;margin-bottom:2rem}
+#gg .gg-hero-ctas{display:flex;flex-wrap:wrap;gap:.75rem}
+#gg .gg-hero-ctas .gg-btn{flex:1 1 auto}
+@keyframes ggRise{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}
+#gg.gg-js .gg-hero-h span,#gg.gg-js .gg-hero-kicker,#gg.gg-js .gg-hero-sub,#gg.gg-js .gg-hero-ctas{animation:ggRise .9s var(--ease) both}
+#gg.gg-js .gg-hero-kicker{animation-delay:.1s}
+#gg.gg-js .gg-hero-h span:nth-child(1){animation-delay:.2s}
+#gg.gg-js .gg-hero-h span:nth-child(2){animation-delay:.38s}
+#gg.gg-js .gg-hero-sub{animation-delay:.56s}
+#gg.gg-js .gg-hero-ctas{animation-delay:.7s}
+
+/* ---------- Ticker de cimas ---------- */
+#gg .gg-ticker{background:var(--noche);color:#CFE4EF;border-top:1px solid rgba(127,208,238,.14);border-bottom:1px solid rgba(127,208,238,.14);overflow:hidden;padding:.95rem 0}
+#gg .gg-ticker-tr{display:flex;width:max-content;animation:ggTick 45s linear infinite}
+#gg .gg-tick{display:inline-flex;align-items:center;gap:.55rem;padding:0 1.5rem;font-stretch:75%;font-weight:600;font-size:1.05rem;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
+#gg .gg-tick b{font-weight:600;color:var(--serac)}
+#gg .gg-tick svg{width:14px;height:11px;color:var(--serac);opacity:.7}
+@keyframes ggTick{to{transform:translateX(-50%)}}
+
+/* ---------- Sobre Guillem ---------- */
+#gg .gg-about{display:grid;gap:2.5rem}
+#gg .gg-portrait{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/5;background:linear-gradient(160deg,var(--hielo2),var(--glaciar))}
+#gg .gg-portrait img{width:100%;height:100%;object-fit:cover}
+#gg .gg-portrait::after{content:"";position:absolute;inset:auto 0 0 0;height:45%;background:linear-gradient(0deg,rgba(13,28,43,.85),transparent)}
+#gg .gg-portrait-tag{position:absolute;z-index:1;left:1.1rem;right:1.1rem;bottom:1.1rem;display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;color:#fff}
+#gg .gg-portrait-tag b{font-stretch:62%;font-weight:800;text-transform:uppercase;font-size:1.6rem;line-height:1}
+#gg .gg-portrait-tag span{font-size:.78rem;font-weight:650;padding:.4rem .7rem;border-radius:999px;background:rgba(127,208,238,.18);border:1px solid rgba(127,208,238,.45);color:var(--serac);white-space:nowrap}
+#gg .gg-about-lead{font-size:1.15rem;font-weight:500;color:var(--noche);margin-bottom:1rem}
+#gg .gg-about-txt p{color:var(--roca)}
+#gg .gg-about-txt .gg-more-in p{margin-bottom:.9rem}
+#gg .gg-quote{margin:1.8rem 0 0;padding:.4rem 0 .4rem 1.2rem;border-left:3px solid var(--glaciar);font-stretch:75%;font-weight:700;font-size:clamp(1.45rem,5vw,1.95rem);line-height:1.15;color:var(--noche)}
+#gg .gg-tl{margin-top:2.75rem}
+#gg .gg-tl h3{font-stretch:75%;font-weight:700;font-size:1.3rem;color:var(--noche);margin-bottom:1rem}
+#gg .gg-tl li{display:grid;grid-template-columns:3.4rem 1fr;gap:.9rem;padding:.85rem 0;border-top:1px solid var(--hielo2);break-inside:avoid}
+#gg .gg-tl time{font-stretch:62%;font-weight:800;font-size:1.4rem;line-height:1.15;color:var(--glaciar)}
+#gg .gg-tl span{font-size:.97rem;color:var(--tinta)}
+
+/* ---------- Experiencias ---------- */
+#gg .gg-filters{display:flex;gap:.5rem;overflow-x:auto;margin:0 -1.25rem 1.6rem;padding:0 1.25rem .25rem;scrollbar-width:none;position:relative;z-index:1}
+#gg .gg-filters::-webkit-scrollbar{display:none}
+#gg .gg-filter{flex:0 0 auto;min-height:42px;padding:.55rem 1.05rem;border-radius:999px;border:1.5px solid rgba(127,208,238,.3);color:#CFE4EF;font-size:.92rem;font-weight:600;transition:background .2s,color .2s,border-color .2s}
+#gg .gg-filter:hover{border-color:var(--serac)}
+#gg .gg-filter[aria-pressed="true"]{background:var(--serac);border-color:var(--serac);color:var(--noche)}
+#gg .gg-exp-grid{position:relative;z-index:1;display:flex;align-items:flex-start;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -1.25rem;padding:.25rem 1.25rem 1.25rem;scroll-padding:0 1.25rem;scrollbar-width:none}
+#gg .gg-exp-grid::-webkit-scrollbar{display:none}
+#gg .gg-exp{flex:0 0 min(85%,360px);scroll-snap-align:start;background:var(--noche2);border:1px solid rgba(127,208,238,.12);border-radius:20px;overflow:hidden;transition:transform .35s var(--ease),border-color .3s}
+#gg .gg-exp[hidden]{display:none}
+#gg .gg-exp:hover{border-color:rgba(127,208,238,.4)}
+#gg .gg-exp-img{position:relative;aspect-ratio:4/3;background:linear-gradient(160deg,var(--noche3),var(--glaciar))}
+#gg .gg-exp-img img{width:100%;height:100%;object-fit:cover}
+#gg .gg-exp-cat{position:absolute;top:.8rem;left:.8rem;font-size:.76rem;font-weight:650;padding:.35rem .7rem;border-radius:999px;background:rgba(13,28,43,.65);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff}
+#gg .gg-price{position:absolute;right:.8rem;bottom:.8rem;display:flex;align-items:baseline;gap:.3rem;padding:.45rem .8rem;border-radius:999px;background:var(--nieve);color:var(--noche);font-weight:750;font-size:1rem}
+#gg .gg-price small{font-size:.74rem;font-weight:550;color:var(--roca)}
+#gg .gg-exp-b{padding:1.2rem 1.25rem 1.35rem}
+#gg .gg-exp h3{font-stretch:75%;font-weight:700;font-size:1.5rem;line-height:1.08;color:#fff;margin-bottom:.7rem}
+#gg .gg-meta{display:flex;flex-wrap:wrap;gap:.4rem 1rem;font-size:.86rem;color:var(--niebla);margin-bottom:.8rem}
+#gg .gg-meta li{display:flex;align-items:center;gap:.35rem}
+#gg .gg-meta svg{width:15px;height:15px;color:var(--serac)}
+#gg .gg-lvl{display:flex;align-items:center;gap:4px;margin-bottom:.85rem}
+#gg .gg-lvl i{width:20px;height:6px;border-radius:3px;background:rgba(127,208,238,.18)}
+#gg .gg-lvl i.on{background:var(--serac)}
+#gg .gg-lvl em{font-style:normal;font-size:.82rem;font-weight:600;color:#CFE4EF;margin-left:.45rem}
+#gg .gg-exp p{font-size:.95rem;color:#B9CAD6}
+#gg .gg-exp-custom{align-self:stretch;position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:22rem;padding:1.6rem 1.4rem;background:transparent;border:1.5px dashed rgba(127,208,238,.45)}
+#gg .gg-exp-custom>svg{position:absolute;top:1.4rem;left:1.4rem;width:64px;height:50px;color:var(--serac)}
+#gg .gg-exp-custom h3{font-size:1.9rem}
+#gg .gg-exp-custom .gg-btn{align-self:flex-start;margin-top:1.2rem}
+#gg .gg-act{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-top:.9rem}
+
+/* ---------- Formación ---------- */
+#gg .gg-crs-grid{display:grid;gap:1rem}
+#gg .gg-crs{display:flex;flex-direction:column;background:#fff;border:1px solid var(--hielo2);border-radius:18px;padding:1.4rem 1.35rem 1.2rem;transition:border-color .3s}
+#gg .gg-crs:focus-within,#gg .gg-crs:hover{border-color:var(--glaciar)}
+#gg .gg-crs-top{display:flex;align-items:center;gap:.9rem;margin-bottom:.9rem}
+#gg .gg-crs-ic{width:52px;height:52px;flex-shrink:0;border-radius:15px;background:var(--hielo);color:var(--glaciar);display:grid;place-items:center}
+#gg .gg-crs-ic svg{width:26px;height:26px}
+#gg .gg-crs h3{font-stretch:75%;font-weight:700;font-size:1.38rem;line-height:1.1;color:var(--noche)}
+#gg .gg-crs p{font-size:.95rem;color:var(--roca)}
+#gg .gg-crs-foot{margin-top:auto;padding-top:1rem}
+#gg .gg-crs-data{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.8rem 0 .2rem;margin-top:.9rem;border-top:1px solid var(--hielo)}
+#gg .gg-crs-data span{display:flex;align-items:center;gap:.35rem;font-size:.88rem;color:var(--roca)}
+#gg .gg-crs-data svg{width:15px;height:15px;color:var(--glaciar)}
+#gg .gg-crs-data b{font-weight:750;color:var(--noche)}
+#gg .gg-crs-data b small{font-weight:500;font-size:.78rem;color:var(--roca);margin-right:.25rem}
+
+/* ---------- Por qué conmigo ---------- */
+#gg .gg-stats{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,1fr);gap:1.75rem 1rem;padding-bottom:2.75rem;margin-bottom:2.75rem;border-bottom:1px solid rgba(127,208,238,.16)}
+#gg .gg-stat b{display:block;font-stretch:62%;font-weight:800;font-size:clamp(3.2rem,13vw,5.4rem);line-height:.95;color:#fff}
+#gg .gg-stat span{display:block;font-size:.92rem;color:var(--niebla);margin-top:.35rem}
+#gg .gg-why{position:relative;z-index:1;display:grid;gap:1.75rem}
+#gg .gg-why-i svg{width:30px;height:30px;color:var(--serac);margin-bottom:.8rem}
+#gg .gg-why-i h3{font-stretch:75%;font-weight:700;font-size:1.3rem;line-height:1.15;color:#fff;margin-bottom:.4rem}
+#gg .gg-why-i p{font-size:.95rem;color:var(--niebla)}
+
+/* ---------- Cómo funciona ---------- */
+#gg .gg-steps{display:grid;gap:1.5rem;counter-reset:st}
+#gg .gg-step{position:relative;padding-left:4.2rem}
+#gg .gg-step-n{position:absolute;left:0;top:0;width:3rem;height:3rem;border-radius:50%;background:var(--noche);color:var(--serac);display:grid;place-items:center;font-stretch:62%;font-weight:800;font-size:1.45rem}
+#gg .gg-step h3{font-stretch:75%;font-weight:700;font-size:1.32rem;color:var(--noche);margin-bottom:.3rem;line-height:1.15;padding-top:.45rem}
+#gg .gg-step p{font-size:.96rem;color:var(--roca)}
+
+/* ---------- Calendario ---------- */
+#gg .gg-cal{position:relative;z-index:1;display:grid;gap:.75rem}
+#gg .gg-cal-row{display:grid;grid-template-columns:4.6rem 1fr;gap:.9rem 1rem;align-items:center;padding:1rem;border-radius:18px;background:var(--noche2);border:1px solid rgba(127,208,238,.12)}
+#gg .gg-cal-date{text-align:center;padding:.55rem 0;border-radius:13px;background:var(--noche3);line-height:1}
+#gg .gg-cal-date b{display:block;font-stretch:62%;font-weight:800;font-size:2.1rem;color:#fff}
+#gg .gg-cal-date span{display:block;font-size:.78rem;font-weight:650;color:var(--serac);margin-top:.2rem;text-transform:capitalize}
+#gg .gg-cal-date small{display:block;font-size:.7rem;color:var(--niebla);margin-top:.2rem}
+#gg .gg-cal-info h3{font-stretch:75%;font-weight:700;font-size:1.22rem;line-height:1.12;color:#fff}
+#gg .gg-cal-info p{font-size:.86rem;color:var(--niebla);margin-top:.25rem}
+#gg .gg-cal-side{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+#gg .gg-cal-st{display:flex;align-items:center;gap:.45rem;font-size:.88rem;font-weight:600;color:#CFE4EF}
+#gg .gg-cal-st::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--serac)}
+#gg .gg-cal-st.low::before{background:#FFC46B}
+#gg .gg-cal-st.full{color:var(--niebla)}
+#gg .gg-cal-st.full::before{background:var(--niebla)}
+#gg .gg-cal-empty{padding:1.5rem;border-radius:18px;border:1px dashed rgba(127,208,238,.35);color:#CFE4EF}
+
+/* ---------- Galería ---------- */
+#gg .gg-gal{display:grid;grid-template-columns:repeat(2,1fr);grid-auto-rows:140px;grid-auto-flow:dense;gap:.6rem}
+#gg .gg-gal button{position:relative;display:block;width:100%;height:100%;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,var(--hielo2),var(--glaciar))}
+#gg .gg-gal img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+#gg .gg-gal button:hover img{transform:scale(1.05)}
+#gg .gg-gal button:nth-child(1){grid-row:span 2}
+#gg .gg-gal button:nth-child(4){grid-column:span 2}
+#gg .gg-lb{position:fixed;inset:0;z-index:1000;background:rgba(8,16,25,.95);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+#gg .gg-lb.open{opacity:1;visibility:visible}
+#gg .gg-lb img{max-width:92vw;max-height:80vh;border-radius:12px;object-fit:contain}
+#gg .gg-lb figcaption{position:absolute;left:0;right:0;bottom:calc(1.25rem + env(safe-area-inset-bottom));text-align:center;color:#CFE4EF;font-size:.92rem;padding:0 4rem}
+#gg .gg-lb-x,#gg .gg-lb-p,#gg .gg-lb-n{position:absolute;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;display:grid;place-items:center}
+#gg .gg-lb-x svg,#gg .gg-lb-p svg,#gg .gg-lb-n svg{width:22px;height:22px}
+#gg .gg-lb-x{top:calc(1rem + env(safe-area-inset-top));right:1rem}
+#gg .gg-lb-p{left:.75rem;top:50%;transform:translateY(-50%)}
+#gg .gg-lb-n{right:.75rem;top:50%;transform:translateY(-50%)}
+
+/* ---------- Opiniones ---------- */
+#gg .gg-rev-sum{display:flex;align-items:center;gap:.9rem;margin-top:1.4rem}
+#gg .gg-rev-sum .gg-g{width:40px;height:40px;background:#fff;border-radius:50%;padding:7px;box-shadow:0 4px 14px rgba(13,28,43,.1)}
+#gg .gg-rev-sum b{font-stretch:62%;font-weight:800;font-size:2.8rem;line-height:1;color:var(--noche)}
+#gg .gg-rev-sum small{display:block;font-size:.85rem;color:var(--roca)}
+#gg .gg-stars{display:flex;gap:2px}
+#gg .gg-stars svg{width:16px;height:16px;fill:#FBBC04}
+#gg .gg-rev-grid{display:flex;align-items:stretch;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -1.25rem;padding:.25rem 1.25rem 1.25rem;scroll-padding:0 1.25rem;scrollbar-width:none}
+#gg .gg-rev-grid::-webkit-scrollbar{display:none}
+#gg .gg-rev{flex:0 0 min(86%,370px);scroll-snap-align:start;display:flex;flex-direction:column;gap:.9rem;background:#fff;border:1px solid var(--hielo2);border-radius:18px;padding:1.3rem}
+#gg .gg-rev-h{display:flex;align-items:center;gap:.75rem}
+#gg .gg-av{width:44px;height:44px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:.95rem}
+#gg .gg-rev-who{flex:1;min-width:0}
+#gg .gg-rev-who b{display:flex;align-items:center;gap:.35rem;font-weight:700;font-size:.98rem;color:var(--noche)}
+#gg .gg-rev-who b svg{width:16px;height:16px;flex-shrink:0}
+#gg .gg-rev-who .gg-stars{margin-top:.2rem}
+#gg .gg-rev-h .gg-g{width:22px;height:22px;flex-shrink:0}
+#gg .gg-rev p{font-size:.95rem;color:var(--tinta);flex:1}
+#gg .gg-rev-act{font-size:.82rem;font-weight:600;color:var(--glaciar);padding-top:.8rem;border-top:1px solid var(--hielo)}
+
+/* ---------- Preguntas frecuentes ---------- */
+#gg .gg-faq-w{display:grid;gap:1rem}
+#gg .gg-faq li{border-bottom:1px solid var(--hielo2)}
+#gg .gg-faq li:first-child{border-top:1px solid var(--hielo2)}
+#gg .gg-faq-q{display:flex;width:100%;justify-content:space-between;align-items:center;gap:1rem;min-height:64px;padding:1rem 0;text-align:left;font-weight:650;font-size:1.05rem;color:var(--noche)}
+#gg .gg-faq-q i{position:relative;width:28px;height:28px;flex-shrink:0;border-radius:50%;background:var(--hielo);transition:background .3s}
+#gg .gg-faq-q i::before,#gg .gg-faq-q i::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;margin:-1px 0 0 -6px;background:var(--glaciar);border-radius:2px;transition:transform .3s var(--ease),background .3s}
+#gg .gg-faq-q i::after{transform:rotate(90deg)}
+#gg .gg-faq-q[aria-expanded="true"] i{background:var(--glaciar)}
+#gg .gg-faq-q[aria-expanded="true"] i::before,#gg .gg-faq-q[aria-expanded="true"] i::after{background:#fff}
+#gg .gg-faq-q[aria-expanded="true"] i::after{transform:rotate(0)}
+#gg .gg-faq .gg-more-in{padding:0 0 1.2rem;color:var(--roca);max-width:44rem}
+
+/* ---------- Contacto ---------- */
+#gg .gg-ct{overflow:hidden}
+#gg .gg-ct-bg{position:absolute;inset:0;background:var(--noche)}
+#gg .gg-ct-bg img{width:100%;height:100%;object-fit:cover;opacity:.22}
+#gg .gg-ct-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--noche) 0%,rgba(13,28,43,.75) 40%,var(--noche) 100%)}
+#gg .gg-ct-w{position:relative;z-index:1;display:grid;gap:2.25rem}
+#gg .gg-ct-direct{margin-top:1.75rem}
+#gg .gg-ct-direct p{font-size:.95rem;color:var(--niebla);margin-bottom:.75rem}
+#gg .gg-form{background:rgba(20,41,61,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(127,208,238,.18);border-radius:22px;padding:1.4rem}
+#gg .gg-field{margin-bottom:1rem}
+#gg .gg-field label{display:block;font-size:.86rem;font-weight:600;color:#CFE4EF;margin-bottom:.4rem}
+#gg .gg-field input,#gg .gg-field select,#gg .gg-field textarea{width:100%;min-height:50px;padding:.8rem 1rem;border-radius:13px;border:1px solid rgba(127,208,238,.25);background:rgba(255,255,255,.06);color:#fff;font:inherit;font-size:16px;line-height:1.3;outline:none;transition:border-color .2s,background .2s;-webkit-appearance:none;appearance:none;box-shadow:none}
+#gg .gg-field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237FD0EE' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;background-size:18px;padding-right:2.6rem}
+#gg .gg-field select option,#gg .gg-field select optgroup{background:var(--noche);color:#fff}
+#gg .gg-field input::placeholder,#gg .gg-field textarea::placeholder{color:rgba(207,228,239,.5)}
+#gg .gg-field input:focus,#gg .gg-field select:focus,#gg .gg-field textarea:focus{border-color:var(--serac);background:rgba(127,208,238,.08)}
+#gg .gg-field textarea{min-height:110px;resize:vertical}
+#gg .gg-field input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(.8)}
+#gg .gg-row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+#gg .gg-row2>*{min-width:0}
+#gg .gg-form .gg-btn{width:100%;margin-top:.4rem}
+#gg .gg-form-err{min-height:1.3em;margin-top:.7rem;font-size:.88rem;color:#FFB4A8}
+
+/* ---------- Pie ---------- */
+#gg .gg-foot{background:#081420;color:#8FA3B4;padding:3.5rem 0 calc(6rem + env(safe-area-inset-bottom))}
+#gg .gg-foot-top{display:grid;gap:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(127,208,238,.1)}
+#gg .gg-foot .gg-logo{color:#fff}
+#gg .gg-foot-tag{margin-top:.9rem;font-size:.93rem;max-width:22rem}
+#gg .gg-foot h4{font-size:.95rem;font-weight:650;color:#fff;margin-bottom:.8rem}
+#gg .gg-foot-links{display:flex;flex-direction:column;gap:.45rem;font-size:.93rem}
+#gg .gg-foot-links a:hover{color:#fff}
+#gg .gg-social{display:flex;gap:.5rem;margin-top:1.2rem}
+#gg .gg-social a{width:42px;height:42px;border-radius:50%;border:1px solid rgba(127,208,238,.2);display:grid;place-items:center;color:#CFE4EF;transition:border-color .2s,color .2s}
+#gg .gg-social a:hover{border-color:var(--serac);color:var(--serac)}
+#gg .gg-social svg{width:18px;height:18px}
+#gg .gg-foot-bot{display:flex;flex-direction:column;gap:.75rem;padding-top:1.5rem;font-size:.84rem}
+#gg .gg-foot-bot nav{display:flex;flex-wrap:wrap;gap:1.2rem}
+#gg .gg-foot-bot a:hover{color:#fff}
+
+/* ---------- Botón WhatsApp fijo ---------- */
+#gg .gg-wa{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:950;display:flex;align-items:center;gap:.6rem}
+#gg .gg-wa-btn{position:relative;width:58px;height:58px;border-radius:50%;background:#25D366;color:#fff;display:grid;place-items:center;box-shadow:0 10px 28px rgba(37,211,102,.42);transition:transform .25s var(--ease)}
+#gg .gg-wa-btn svg{width:30px;height:30px}
+#gg .gg-wa-btn::before{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(37,211,102,.5);animation:ggPulse 2.6s infinite}
+#gg .gg-wa:hover .gg-wa-btn{transform:scale(1.07)}
+#gg .gg-wa-label{order:-1;background:#fff;color:var(--noche);font-weight:650;font-size:.9rem;padding:.6rem .95rem;border-radius:999px;box-shadow:0 8px 24px rgba(13,28,43,.2);opacity:0;transform:translateX(10px);pointer-events:none;transition:opacity .3s,transform .3s var(--ease);white-space:nowrap}
+#gg .gg-wa:hover .gg-wa-label,#gg .gg-wa.show .gg-wa-label{opacity:1;transform:none}
+@keyframes ggPulse{0%{transform:scale(1);opacity:1}100%{transform:scale(1.5);opacity:0}}
+
+/* ---------- Aparición al hacer scroll ---------- */
+#gg.gg-js .gg-rv{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+#gg.gg-js .gg-rv.on{opacity:1;transform:none}
+
+/* =================== TABLET (≥ 760px) =================== */
+@media(min-width:760px){
+  #gg .gg-wrap{padding:0 2rem}
+  #gg .gg-hero-ctas .gg-btn{flex:0 0 auto}
+  #gg .gg-hero-in{padding-bottom:4.5rem}
+  #gg .gg-tl ol{columns:2;column-gap:2.5rem}
+  #gg .gg-filters{margin:0 0 2rem;padding:0;flex-wrap:wrap;overflow:visible}
+  #gg .gg-exp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;overflow:visible;margin:0;padding:0}
+  #gg .gg-exp{flex:none}
+  #gg .gg-crs-grid{grid-template-columns:repeat(2,1fr);gap:1.25rem}
+  #gg .gg-stats{grid-template-columns:repeat(4,1fr)}
+  #gg .gg-why{grid-template-columns:repeat(2,1fr);gap:2.25rem 2rem}
+  #gg .gg-steps{grid-template-columns:repeat(2,1fr);gap:2rem}
+  #gg .gg-cal-row{grid-template-columns:5.2rem 1fr auto;padding:1rem 1.25rem}
+  #gg .gg-cal-side{grid-column:auto;justify-content:flex-end;gap:1.25rem}
+  #gg .gg-gal{grid-template-columns:repeat(4,1fr);grid-auto-rows:190px;gap:.8rem}
+  #gg .gg-gal button:nth-child(1){grid-column:span 2;grid-row:span 2}
+  #gg .gg-gal button:nth-child(4){grid-column:auto}
+  #gg .gg-gal button:nth-child(6){grid-column:span 2}
+  #gg .gg-rev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;overflow:visible;margin:0;padding:0}
+  #gg .gg-rev{flex:none}
+  #gg .gg-form{padding:2rem}
+  #gg .gg-foot-top{grid-template-columns:1.4fr 1fr 1fr}
+  #gg .gg-foot-bot{flex-direction:row;justify-content:space-between}
+  #gg .gg-wa{right:28px;bottom:28px}
+  #gg .gg-wa-btn{width:62px;height:62px}
+}
+
+/* =================== ESCRITORIO (≥ 1100px) =================== */
+@media(min-width:1100px){
+  #gg{--hh:76px}
+  #gg .gg-sec{padding:7rem 0}
+  #gg .gg-head{margin-bottom:3.5rem}
+  #gg .gg-hdr-in{padding:0 2rem;gap:1rem}
+  #gg .gg-nav{display:flex;gap:.1rem}
+  #gg .gg-hdr-cta{display:inline-flex}
+  #gg .gg-burger{display:none}
+  #gg .gg-about{grid-template-columns:5fr 7fr;gap:4.5rem;align-items:start}
+  #gg .gg-portrait{position:sticky;top:calc(var(--hh) + 2rem)}
+  #gg .gg-exp-grid,#gg .gg-crs-grid,#gg .gg-rev-grid{grid-template-columns:repeat(3,1fr)}
+  #gg .gg-exp.feat{grid-column:span 2}
+  #gg .gg-exp.feat .gg-exp-img{aspect-ratio:16/7}
+  #gg .gg-why{grid-template-columns:repeat(4,1fr)}
+  #gg .gg-steps{grid-template-columns:repeat(4,1fr)}
+  #gg .gg-step{padding:4.4rem 0 0}
+  #gg .gg-step::after{content:"";position:absolute;top:1.5rem;left:3.75rem;right:-1.25rem;height:1px;background:var(--hielo2)}
+  #gg .gg-step:last-child::after{display:none}
+  #gg .gg-faq-w{grid-template-columns:4fr 7fr;gap:4rem;align-items:start}
+  #gg .gg-ct-w{grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+  #gg .gg-lb-p{left:2rem} #gg .gg-lb-n{right:2rem}
+}
+@media(min-width:1400px){
+  #gg .gg-rail{display:block;position:fixed;left:26px;top:50%;transform:translateY(-50%);height:46vh;width:90px;z-index:800;color:#fff;mix-blend-mode:difference;pointer-events:none}
+  #gg .gg-rail::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:currentColor;opacity:.45}
+  #gg .gg-rail::after{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:repeating-linear-gradient(180deg,currentColor 0 1px,transparent 1px 10%);opacity:.45}
+  #gg .gg-rail-m{position:absolute;left:-4px;top:100%;display:flex;align-items:center;gap:.55rem;transform:translateY(-50%);transition:top .15s linear}
+  #gg .gg-rail-m::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor}
+  #gg .gg-rail-m b{font-stretch:62%;font-weight:800;font-size:1.15rem;line-height:1;white-space:nowrap}
+  #gg .gg-rail-m small{display:block;font-size:.66rem;font-weight:550;opacity:.75}
+}
+
+/* =================== Menos movimiento =================== */
+@media(prefers-reduced-motion:reduce){
+  #gg *,#gg *::before,#gg *::after{animation:none!important;transition-duration:.01ms!important}
+  #gg.gg-js .gg-rv{opacity:1;transform:none}
+}
+</style>
+
+<div id="gg" lang="es">
+
+  <!-- ================= CABECERA ================= -->
+  <header class="gg-hdr" id="gg-hdr">
+    <div class="gg-hdr-in">
+      <a href="#gg-inicio" class="gg-logo" aria-label="Guillem Galabert">
+        <svg viewBox="0 0 34 26" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 24L12 5.5l5.5 9 4-6L32.5 24" stroke="currentColor" stroke-width="2.4"/><path d="M8.8 11.2L12 5.5l3.2 5.3" stroke="#7FD0EE" stroke-width="2.4"/></svg>
+        <span class="gg-logo-t"><b>Guillem Galabert</b><small data-i18n="logo_sub">Guía de alta montaña</small></span>
+      </a>
+      <nav class="gg-nav" aria-label="Principal">
+        <a href="#gg-sobre" data-i18n="nav_about">Sobre mí</a>
+        <a href="#gg-experiencias" data-i18n="nav_exp">Experiencias</a>
+        <a href="#gg-formacion" data-i18n="nav_crs">Formación</a>
+        <a href="#gg-salidas" data-i18n="nav_cal">Salidas</a>
+        <a href="#gg-opiniones" data-i18n="nav_rev">Opiniones</a>
+        <a href="#gg-contacto" data-i18n="nav_ct">Contacto</a>
+      </nav>
+      <div class="gg-lang" id="gg-lang">
+        <button class="gg-lang-btn" type="button" aria-haspopup="true" aria-expanded="false" data-i18n-aria="lang_label" aria-label="Idioma">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+          <span id="gg-lang-cur">ES</span>
+        </button>
+        <div class="gg-lang-menu" role="menu">
+          <button type="button" role="menuitem" data-lang="es">Español</button>
+          <button type="button" role="menuitem" data-lang="ca">Català</button>
+          <button type="button" role="menuitem" data-lang="en">English</button>
+          <button type="button" role="menuitem" data-lang="fr">Français</button>
+        </div>
+      </div>
+      <a href="#gg-contacto" class="gg-btn gg-btn-p gg-btn-sm gg-hdr-cta" data-i18n="hdr_cta">Reservar</a>
+      <button class="gg-burger" id="gg-burger" type="button" aria-expanded="false" aria-controls="gg-mnav" data-i18n-aria="menu" aria-label="Menú"><span></span><span></span><span></span></button>
+    </div>
+    <div class="gg-prog" id="gg-prog"></div>
+  </header>
+
+  <div class="gg-mnav" id="gg-mnav">
+    <svg class="gg-topo" data-topo="2" aria-hidden="true"></svg>
+    <nav aria-label="Móvil">
+      <a href="#gg-sobre" data-i18n="nav_about">Sobre mí</a>
+      <a href="#gg-experiencias" data-i18n="nav_exp">Experiencias</a>
+      <a href="#gg-formacion" data-i18n="nav_crs">Formación</a>
+      <a href="#gg-salidas" data-i18n="nav_cal">Salidas</a>
+      <a href="#gg-opiniones" data-i18n="nav_rev">Opiniones</a>
+      <a href="#gg-faq" data-i18n="nav_faq">Dudas</a>
+      <a href="#gg-contacto" data-i18n="nav_ct">Contacto</a>
+    </nav>
+    <a href="#gg-contacto" class="gg-btn gg-btn-p" data-i18n="hdr_cta">Reservar</a>
+  </div>
+
+  <!-- Altímetro (escritorio ancho) -->
+  <div class="gg-rail" aria-hidden="true"><div class="gg-rail-m" id="gg-rail-m"><span><small data-i18n="alt_label">Altitud</small><b id="gg-alt">1020 m</b></span></div></div>
+
+  <!-- ================= HERO ================= -->
+  <section class="gg-hero" id="gg-inicio" data-alt="1020">
+    <div class="gg-hero-media"><img id="gg-hero-img" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=2000&q=72" alt="Cumbre nevada bajo un cielo estrellado" fetchpriority="high" onerror="this.classList.add('gg-x')"></div>
+    <div class="gg-hero-shade"></div>
+    <svg class="gg-topo" data-topo="0" aria-hidden="true"></svg>
+    <div class="gg-wrap gg-hero-in">
+      <p class="gg-hero-kicker"><svg viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M1 13L7 2l3.5 6 2-3L17 13z"/></svg><span data-i18n="hero_kicker">Guía internacional UIAGM en Pirineos, Alpes y expediciones</span></p>
+      <h1 class="gg-hero-h"><span data-i18n="hero_t1">Sube más alto.</span><span class="gg-outline" data-i18n="hero_t2">Vuelve siempre.</span></h1>
+      <p class="gg-hero-sub" data-i18n="hero_sub">Soy Guillem. Te llevo del primer sendero a la cumbre más alta y te enseño a moverte por la montaña con seguridad.</p>
+      <div class="gg-hero-ctas">
+        <a href="#gg-experiencias" class="gg-btn gg-btn-p" data-i18n="hero_b1">Ver experiencias</a>
+        <a href="#gg-formacion" class="gg-btn gg-btn-g" data-i18n="hero_b2">Ver formación</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="gg-ticker" aria-hidden="true"><div class="gg-ticker-tr" id="gg-tick"></div></div>
+
+  <!-- ================= SOBRE GUILLEM ================= -->
+  <section class="gg-sec" id="gg-sobre" data-alt="1480">
+    <div class="gg-wrap gg-about">
+      <div class="gg-portrait gg-rv">
+        <!-- FOTO DE GUILLEM: cambia la URL -->
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=72" alt="Guillem Galabert Guiu" loading="lazy" onerror="this.classList.add('gg-x')">
+        <div class="gg-portrait-tag"><b>Guillem<br>Galabert Guiu</b><span>UIAGM / IFMGA</span></div>
+      </div>
+      <div class="gg-about-txt gg-rv">
+        <h2 class="gg-h2" data-i18n="about_t">Hola, soy Guillem</h2>
+        <p class="gg-about-lead" data-i18n="about_lead">Guía de alta montaña, graduado en Ciencias del Deporte y competidor de toda la vida. Llevo 17 años llevando gente a la montaña y trayéndola de vuelta.</p>
+        <p data-i18n="about_p1">Crecí en el Pirineo con unos esquís en los pies. Entre carreras de esquí de montaña y ultratrails aprendí lo que de verdad importa arriba: preparación, cabeza fría y saber leer el terreno.</p>
+        <div class="gg-more" id="gg-about-more"><div class="gg-more-in"><p data-i18n="about_more">Hoy combino la competición con mi trabajo como guía internacional UIAGM. He hecho cumbre en los Andes, los Alpes y el Himalaya, y he formado a cientos de personas en orientación, avalanchas y rescate. Planifico cada detalle para que tú solo tengas que disfrutar. Y si hay que darse la vuelta, nos damos la vuelta: la montaña seguirá ahí.</p></div></div>
+        <button class="gg-link-btn" type="button" data-more aria-expanded="false" aria-controls="gg-about-more"><span data-lbl>Leer más</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <blockquote class="gg-quote" data-i18n="about_quote">Compito para ganar. Guío para que vuelvas a casa.</blockquote>
+        <div class="gg-tl">
+          <h3 data-i18n="tl_t">Formación y trayectoria</h3>
+          <ol id="gg-tl"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXPERIENCIAS ================= -->
+  <section class="gg-sec gg-dark" id="gg-experiencias" data-alt="2150">
+    <svg class="gg-topo" data-topo="1" aria-hidden="true"></svg>
+    <div class="gg-wrap">
+      <div class="gg-head gg-rv">
+        <h2 class="gg-h2" data-i18n="exp_t">Experiencias</h2>
+        <p class="gg-lead" data-i18n="exp_sub">Desde un paseo con raquetas hasta una expedición de tres semanas. Elige tu nivel y te llevo.</p>
+      </div>
+      <div class="gg-filters" role="group" id="gg-filters">
+        <button class="gg-filter" type="button" data-f="all" aria-pressed="true" data-i18n="f_all">Todas</button>
+        <button class="gg-filter" type="button" data-f="hike" aria-pressed="false" data-i18n="f_hike">Senderismo y paseos</button>
+        <button class="gg-filter" type="button" data-f="trek" aria-pressed="false" data-i18n="f_trek">Travesías y acampada</button>
+        <button class="gg-filter" type="button" data-f="alpine" aria-pressed="false" data-i18n="f_alpine">Alta montaña y expediciones</button>
+      </div>
+      <div class="gg-exp-grid" id="gg-exp"></div>
+    </div>
+  </section>
+
+  <!-- ================= FORMACIÓN ================= -->
+  <section class="gg-sec" id="gg-formacion" data-alt="2700">
+    <div class="gg-wrap">
+      <div class="gg-head gg-rv">
+        <h2 class="gg-h2" data-i18n="crs_t">Formación</h2>
+        <p class="gg-lead" data-i18n="crs_sub">Cursos prácticos para que te muevas por la montaña con criterio propio. Poca pizarra y mucho terreno.</p>
+      </div>
+      <div class="gg-crs-grid" id="gg-crs"></div>
+    </div>
+  </section>
+
+  <!-- ================= POR QUÉ CONMIGO ================= -->
+  <section class="gg-sec gg-dark" id="gg-porque" data-alt="3150">
+    <svg class="gg-topo" data-topo="3" aria-hidden="true"></svg>
+    <div class="gg-wrap">
+      <div class="gg-head gg-rv">
+        <h2 class="gg-h2" data-i18n="why_t">Por qué subir conmigo</h2>
+        <p class="gg-lead" data-i18n="why_sub">La montaña no perdona la improvisación. Por eso no improviso.</p>
+      </div>
+      <div class="gg-stats">
+        <div class="gg-stat"><b class="gg-count" data-count="17">17</b><span data-i18n="s1">años guiando</span></div>
+        <div class="gg-stat"><b class="gg-count" data-count="2400">2400</b><span data-i18n="s2">personas guiadas</span></div>
+        <div class="gg-stat"><b class="gg-count" data-count="46">46</b><span data-i18n="s3">expediciones</span></div>
+        <div class="gg-stat"><b class="gg-count" data-count="19">19</b><span data-i18n="s4">países</span></div>
+      </div>
+      <div class="gg-why" id="gg-why"></div>
+    </div>
+  </section>
+
+  <!-- ================= CÓMO FUNCIONA ================= -->
+  <section class="gg-sec gg-ice" id="gg-pasos" data-alt="3404">
+    <div class="gg-wrap">
+      <div class="gg-head gg-rv">
+        <h2 class="gg-h2" data-i18n="st_t">Cómo funciona</h2>
+      </div>
+      <ol class="gg-steps" id="gg-steps"></ol>
+    </div>
+  </section>
+
+  <!-- ================= PRÓXIMAS SALIDAS ================= -->
+  <section class="gg-sec gg-dark" id="gg-salidas" data-alt="3900">
+    <svg class="gg-topo" data-topo="4" aria-hidden="true"></svg>
+    <div class="gg-wrap">
+      <div class="gg-head gg-rv">
+        <h2 class="gg-h2" data-i18n="cal_t">Próximas salidas</h2>
+        <p class="gg-lead" data-i18n="cal_sub">Salidas con fecha fija y grupo abierto. Si ninguna te encaja, organizamos la tuya.</p>
+      </div>
+      <ul class="gg-cal" id="gg-cal"></ul>
+    </div>
+  </section>
+
+  <!-- ================= GALERÍA ================= -->
+  <section class="gg-sec" id="gg-galeria" data-alt="4250">
+    <div class="gg-wrap">
+      <div class="gg-head gg-rv">
+        <h2 class="gg-h2" data-i18n="gal_t">Galería</h2>
+        <p class="gg-lead" data-i18n="gal_sub">Algunos de los sitios a los que podemos ir juntos.</p>
+      </div>
+      <div class="gg-gal" id="gg-gal"></div>
+    </div>
+  </section>
+
+  <!-- ================= OPINIONES ================= -->
+  <section class="gg-sec gg-ice" id="gg-opiniones" data-alt="4500">
+    <div class="gg-wrap">
+      <div class="gg-head gg-rv">
+        <h2 class="gg-h2" data-i18n="rev_t">Lo que dicen quienes han subido conmigo</h2>
+        <div class="gg-rev-sum">
+          <svg class="gg-g" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.5z"/></svg>
+          <b id="gg-score">4,9</b>
+          <div><div class="gg-stars" id="gg-sum-stars"></div><small><span data-i18n="rev_score">de 5 en Google</span>, <span data-i18n="rev_count">127 opiniones</span></small></div>
+        </div>
+      </div>
+      <!-- OPINIONES DE EJEMPLO: sustituir por reseñas reales de Google antes de publicar -->
+      <div class="gg-rev-grid" id="gg-rev"></div>
+    </div>
+  </section>
+
+  <!-- ================= PREGUNTAS FRECUENTES ================= -->
+  <section class="gg-sec" id="gg-faq" data-alt="4700">
+    <div class="gg-wrap gg-faq-w">
+      <div class="gg-head gg-rv">
+        <h2 class="gg-h2" data-i18n="faq_t">Preguntas frecuentes</h2>
+        <p class="gg-lead" data-i18n="faq_sub">Y si te queda alguna duda, escríbeme por WhatsApp.</p>
+      </div>
+      <ul class="gg-faq" id="gg-faq-list"></ul>
+    </div>
+  </section>
+
+  <!-- ================= CONTACTO ================= -->
+  <section class="gg-sec gg-dark gg-ct" id="gg-contacto" data-alt="4808">
+    <div class="gg-ct-bg"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1800&q=65" alt="" loading="lazy" onerror="this.classList.add('gg-x')"></div>
+    <svg class="gg-topo" data-topo="5" aria-hidden="true"></svg>
+    <div class="gg-wrap gg-ct-w">
+      <div class="gg-rv">
+        <h2 class="gg-h2" data-i18n="ct_t">¿Subimos juntos?</h2>
+        <p class="gg-lead" data-i18n="ct_sub">Rellena esto y se abrirá WhatsApp con tu mensaje listo. Te respondo en menos de 24 horas.</p>
+        <div class="gg-ct-direct">
+          <p data-i18n="ct_direct">¿Prefieres escribirme directamente?</p>
+          <button type="button" class="gg-btn gg-btn-wa" data-wa="default">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <span data-i18n="ct_open">Abrir WhatsApp</span>
+          </button>
+        </div>
+      </div>
+      <form class="gg-form gg-rv" id="gg-form" novalidate>
+        <div class="gg-field"><label for="gg-f-name" data-i18n="f_name">Nombre</label><input id="gg-f-name" type="text" autocomplete="name" required></div>
+        <div class="gg-field"><label for="gg-f-act" data-i18n="f_act">Actividad</label><select id="gg-f-act" required></select></div>
+        <div class="gg-row2">
+          <div class="gg-field"><label for="gg-f-date" data-i18n="f_date">Fecha aproximada</label><input id="gg-f-date" type="date"></div>
+          <div class="gg-field"><label for="gg-f-ppl" data-i18n="f_people">Personas</label>
+            <select id="gg-f-ppl"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option value="9+" data-i18n="f_more8">Más de 8</option></select>
+          </div>
+        </div>
+        <div class="gg-field"><label for="gg-f-msg" data-i18n="f_msg">Cuéntame algo más (opcional)</label><textarea id="gg-f-msg" data-i18n-ph="f_msg_ph" placeholder="Tu nivel, dudas, lo que te apetezca…"></textarea></div>
+        <button type="submit" class="gg-btn gg-btn-wa">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span data-i18n="f_send">Enviar por WhatsApp</span>
+        </button>
+        <p class="gg-form-err" id="gg-form-err" role="alert"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= PIE ================= -->
+  <footer class="gg-foot">
+    <div class="gg-wrap">
+      <div class="gg-foot-top">
+        <div>
+          <a href="#gg-inicio" class="gg-logo">
+            <svg viewBox="0 0 34 26" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 24L12 5.5l5.5 9 4-6L32.5 24" stroke="currentColor" stroke-width="2.4"/><path d="M8.8 11.2L12 5.5l3.2 5.3" stroke="#7FD0EE" stroke-width="2.4"/></svg>
+            <span class="gg-logo-t"><b>Guillem Galabert</b><small data-i18n="logo_sub">Guía de alta montaña</small></span>
+          </a>
+          <p class="gg-foot-tag" data-i18n="foot_tag">Guía internacional de alta montaña en el Pirineo, los Alpes y el resto del mundo.</p>
+          <div class="gg-social">
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".9" fill="currentColor" stroke="none"/></svg></a>
+            <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M22 8.2a3 3 0 00-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 002 8.2 31 31 0 001.6 12 31 31 0 002 15.8a3 3 0 002.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 002.1-2.1 31 31 0 00.4-3.8 31 31 0 00-.4-3.8z"/><path d="M10 15l5-3-5-3z" fill="currentColor" stroke="none"/></svg></a>
+            <a href="#" aria-label="Strava"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.4 17.9l-2.1-4.1h-3l5.1 10 5.1-10h-3zM10.4 2L3.5 15.4h4.1l2.8-5.4 2.8 5.4h4z"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="foot_nav">Navegación</h4>
+          <div class="gg-foot-links">
+            <a href="#gg-sobre" data-i18n="nav_about">Sobre mí</a>
+            <a href="#gg-experiencias" data-i18n="nav_exp">Experiencias</a>
+            <a href="#gg-formacion" data-i18n="nav_crs">Formación</a>
+            <a href="#gg-salidas" data-i18n="nav_cal">Salidas</a>
+            <a href="#gg-faq" data-i18n="nav_faq">Dudas</a>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="nav_ct">Contacto</h4>
+          <div class="gg-foot-links">
+            <a href="#" id="gg-foot-wa">WhatsApp +34 600 000 000</a>
+            <a href="mailto:hola@guillemgalabert.com">hola@guillemgalabert.com</a>
+            <span data-i18n="foot_base">Base en el Pirineo catalán</span>
+          </div>
+        </div>
+      </div>
+      <div class="gg-foot-bot">
+        <p>© <span id="gg-year">2026</span> Guillem Galabert Guiu. <span data-i18n="foot_rights">Todos los derechos reservados.</span></p>
+        <nav aria-label="Legal">
+          <a href="#" data-i18n="foot_priv">Privacidad</a>
+          <a href="#" data-i18n="foot_legal">Aviso legal</a>
+          <a href="#">Cookies</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Botón fijo de WhatsApp -->
+  <div class="gg-wa" id="gg-wa">
+    <span class="gg-wa-label" data-i18n="wa_label">¿Dudas? Escríbeme</span>
+    <a class="gg-wa-btn" id="gg-wa-btn" href="https://wa.me/34600000000" target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+  </div>
+
+  <!-- Visor de galería -->
+  <figure class="gg-lb" id="gg-lb" role="dialog" aria-modal="true">
+    <img id="gg-lb-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="">
+    <figcaption id="gg-lb-cap"></figcaption>
+    <button class="gg-lb-x" type="button" data-lb="x" data-i18n-aria="close" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <button class="gg-lb-p" type="button" data-lb="p" aria-label="‹"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <button class="gg-lb-n" type="button" data-lb="n" aria-label="›"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+  </figure>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* =====================================================================
+   CONFIGURACIÓN RÁPIDA
+   ===================================================================== */
+// Número de WhatsApp con prefijo de país, sin "+" ni espacios
+var WHATSAPP = "34600000000";
+
+// Próximas salidas. "id" debe coincidir con una experiencia o curso de más abajo.
+// Las fechas pasadas desaparecen solas. plazas: 0 = completo.
+var CALENDARIO = [
+  { fecha: "2026-11-08", id: "orientacion", plazas: 5 },
+  { fecha: "2026-11-21", id: "vivac",       plazas: 3 },
+  { fecha: "2026-12-12", id: "raquetas",    plazas: 8 },
+  { fecha: "2027-01-09", id: "nivologia",   plazas: 4 },
+  { fecha: "2027-01-14", id: "aconcagua",   plazas: 2 },
+  { fecha: "2027-01-23", id: "arva",        plazas: 6 },
+  { fecha: "2027-02-20", id: "alpinismo",   plazas: 0 },
+  { fecha: "2027-03-13", id: "auxilios",    plazas: 7 }
+];
+/* ===================================================================== */
+
+var root = document.getElementById("gg");
+if (!root) return;
+root.classList.add("gg-js");
+
+var LANGS = ["es","ca","en","fr"];
+var LOC = { es:"es-ES", ca:"ca-ES", en:"en-GB", fr:"fr-FR" };
+var lang = "es";
+var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function U(id, w){ return "https://images.unsplash.com/photo-" + id + "?auto=format&fit=crop&w=" + (w||900) + "&q=70"; }
+
+/* ---------------- Textos fijos ---------------- */
+var T = {
+es:{
+ cus_t:"¿Otra montaña en mente?", cus_x:"Diseño salidas privadas y expediciones a medida: Kilimanjaro, Elbrus, Himalaya o esa cumbre que tienes pendiente.", cus_b:"Cuéntamelo",
+ logo_sub:"Guía de alta montaña", nav_about:"Sobre mí", nav_exp:"Experiencias", nav_crs:"Formación", nav_cal:"Salidas", nav_rev:"Opiniones", nav_faq:"Dudas", nav_ct:"Contacto", hdr_cta:"Reservar", menu:"Abrir menú", lang_label:"Idioma", alt_label:"Altitud", close:"Cerrar",
+ hero_kicker:"Guía internacional UIAGM en Pirineos, Alpes y expediciones", hero_t1:"Sube más alto.", hero_t2:"Vuelve siempre.", hero_sub:"Soy Guillem. Te llevo del primer sendero a la cumbre más alta y te enseño a moverte por la montaña con seguridad.", hero_b1:"Ver experiencias", hero_b2:"Ver formación",
+ about_t:"Hola, soy Guillem", about_lead:"Guía de alta montaña, graduado en Ciencias del Deporte y competidor de toda la vida. Llevo 17 años llevando gente a la montaña y trayéndola de vuelta.", about_p1:"Crecí en el Pirineo con unos esquís en los pies. Entre carreras de esquí de montaña y ultratrails aprendí lo que de verdad importa arriba: preparación, cabeza fría y saber leer el terreno.", about_more:"Hoy combino la competición con mi trabajo como guía internacional UIAGM. He hecho cumbre en los Andes, los Alpes y el Himalaya, y he formado a cientos de personas en orientación, avalanchas y rescate. Planifico cada detalle para que tú solo tengas que disfrutar. Y si hay que darse la vuelta, nos damos la vuelta: la montaña seguirá ahí.", about_quote:"Compito para ganar. Guío para que vuelvas a casa.", tl_t:"Formación y trayectoria",
+ more:"Saber más", less:"Ver menos", more_about:"Leer más", book:"Reservar", from:"desde", halfday:"Medio día", day:"día", days:"días", alt_max:"Altitud máx.", level:"Nivel",
+ lvl:["Fácil","Moderado","Exigente","Muy exigente","Extremo"],
+ exp_t:"Experiencias", exp_sub:"Desde un paseo con raquetas hasta una expedición de tres semanas. Elige tu nivel y te llevo.", f_all:"Todas", f_hike:"Senderismo y paseos", f_trek:"Travesías y acampada", f_alpine:"Alta montaña y expediciones",
+ crs_t:"Formación", crs_sub:"Cursos prácticos para que te muevas por la montaña con criterio propio. Poca pizarra y mucho terreno.", crs_lbl:"Curso",
+ why_t:"Por qué subir conmigo", why_sub:"La montaña no perdona la improvisación. Por eso no improviso.", s1:"años guiando", s2:"personas guiadas", s3:"expediciones", s4:"países",
+ st_t:"Cómo funciona",
+ cal_t:"Próximas salidas", cal_sub:"Salidas con fecha fija y grupo abierto. Si ninguna te encaja, organizamos la tuya.", cal_p1:"1 plaza libre", cal_pn:"{n} plazas libres", cal_full:"Completo", cal_book:"Reservar plaza", cal_wait:"Lista de espera", cal_empty:"Ahora mismo no hay salidas programadas. Escríbeme y organizamos la tuya.",
+ gal_t:"Galería", gal_sub:"Algunos de los sitios a los que podemos ir juntos.",
+ rev_t:"Lo que dicen quienes han subido conmigo", rev_score:"de 5 en Google", rev_count:"127 opiniones", rev_ver:"Opinión verificada",
+ faq_t:"Preguntas frecuentes", faq_sub:"Y si te queda alguna duda, escríbeme por WhatsApp.",
+ ct_t:"¿Subimos juntos?", ct_sub:"Rellena esto y se abrirá WhatsApp con tu mensaje listo. Te respondo en menos de 24 horas.", ct_direct:"¿Prefieres escribirme directamente?", ct_open:"Abrir WhatsApp",
+ f_name:"Nombre", f_act:"Actividad", f_act_ph:"Elige una actividad", f_custom:"Otra / a medida", f_date:"Fecha aproximada", f_people:"Personas", f_more8:"Más de 8", f_msg:"Cuéntame algo más (opcional)", f_msg_ph:"Tu nivel, dudas, lo que te apetezca…", f_send:"Enviar por WhatsApp", f_err:"Escribe tu nombre y elige una actividad.",
+ wa_hi:"Hola Guillem, soy {v}.", wa_act:"Me interesa: {v}", wa_date:"Fecha aproximada: {v}", wa_ppl:"Personas: {v}", wa_book:"Hola Guillem, me gustaría reservar «{v}». ¿Qué disponibilidad tienes?", wa_cal:"Hola Guillem, quiero una plaza para «{v}» el {d}.", wa_wait:"Hola Guillem, apúntame a la lista de espera de «{v}» del {d}.", wa_default:"Hola Guillem, tengo una duda:", wa_label:"¿Dudas? Escríbeme",
+ foot_tag:"Guía internacional de alta montaña en el Pirineo, los Alpes y el resto del mundo.", foot_nav:"Navegación", foot_base:"Base en el Pirineo catalán", foot_rights:"Todos los derechos reservados.", foot_priv:"Privacidad", foot_legal:"Aviso legal"
+},
+ca:{
+ cus_t:"Una altra muntanya al cap?", cus_x:"Dissenyo sortides privades i expedicions a mida: Kilimanjaro, Elbrus, Himàlaia o aquell cim que tens pendent.", cus_b:"Explica-m’ho",
+ logo_sub:"Guia d’alta muntanya", nav_about:"Sobre mi", nav_exp:"Experiències", nav_crs:"Formació", nav_cal:"Sortides", nav_rev:"Opinions", nav_faq:"Dubtes", nav_ct:"Contacte", hdr_cta:"Reservar", menu:"Obrir menú", lang_label:"Idioma", alt_label:"Altitud", close:"Tancar",
+ hero_kicker:"Guia internacional UIAGM al Pirineu, als Alps i en expedicions", hero_t1:"Puja més amunt.", hero_t2:"Torna sempre.", hero_sub:"Sóc en Guillem. Et porto del primer sender al cim més alt i t’ensenyo a moure’t per la muntanya amb seguretat.", hero_b1:"Veure experiències", hero_b2:"Veure formació",
+ about_t:"Hola, sóc en Guillem", about_lead:"Guia d’alta muntanya, graduat en Ciències de l’Esport i competidor de tota la vida. Fa 17 anys que porto gent a la muntanya i la torno a casa.", about_p1:"Vaig créixer al Pirineu amb uns esquís als peus. Entre curses d’esquí de muntanya i ultratrails vaig aprendre el que de debò importa a dalt: preparació, cap fred i saber llegir el terreny.", about_more:"Avui combino la competició amb la meva feina com a guia internacional UIAGM. He fet cim als Andes, als Alps i a l’Himàlaia, i he format centenars de persones en orientació, allaus i rescat. Planifico cada detall perquè tu només hagis de gaudir. I si cal fer mitja volta, la fem: la muntanya continuarà allà.", about_quote:"Competeixo per guanyar. Guio perquè tornis a casa.", tl_t:"Formació i trajectòria",
+ more:"Saber-ne més", less:"Veure’n menys", more_about:"Llegir més", book:"Reservar", from:"des de", halfday:"Mig dia", day:"dia", days:"dies", alt_max:"Altitud màx.", level:"Nivell",
+ lvl:["Fàcil","Moderat","Exigent","Molt exigent","Extrem"],
+ exp_t:"Experiències", exp_sub:"Des d’una passejada amb raquetes fins a una expedició de tres setmanes. Tria el teu nivell i t’hi porto.", f_all:"Totes", f_hike:"Senderisme i passejades", f_trek:"Travesses i acampada", f_alpine:"Alta muntanya i expedicions",
+ crs_t:"Formació", crs_sub:"Cursos pràctics perquè et moguis per la muntanya amb criteri propi. Poca pissarra i molt terreny.", crs_lbl:"Curs",
+ why_t:"Per què pujar amb mi", why_sub:"La muntanya no perdona la improvisació. Per això no improviso.", s1:"anys guiant", s2:"persones guiades", s3:"expedicions", s4:"països",
+ st_t:"Com funciona",
+ cal_t:"Properes sortides", cal_sub:"Sortides amb data fixa i grup obert. Si cap no t’encaixa, organitzem la teva.", cal_p1:"1 plaça lliure", cal_pn:"{n} places lliures", cal_full:"Complet", cal_book:"Reservar plaça", cal_wait:"Llista d’espera", cal_empty:"Ara mateix no hi ha sortides programades. Escriu-me i organitzem la teva.",
+ gal_t:"Galeria", gal_sub:"Alguns dels llocs on podem anar junts.",
+ rev_t:"El que diuen els qui han pujat amb mi", rev_score:"de 5 a Google", rev_count:"127 opinions", rev_ver:"Opinió verificada",
+ faq_t:"Preguntes freqüents", faq_sub:"I si et queda algun dubte, escriu-me per WhatsApp.",
+ ct_t:"Pugem junts?", ct_sub:"Omple això i s’obrirà WhatsApp amb el missatge a punt. Et responc en menys de 24 hores.", ct_direct:"Prefereixes escriure’m directament?", ct_open:"Obrir WhatsApp",
+ f_name:"Nom", f_act:"Activitat", f_act_ph:"Tria una activitat", f_custom:"Una altra / a mida", f_date:"Data aproximada", f_people:"Persones", f_more8:"Més de 8", f_msg:"Explica’m alguna cosa més (opcional)", f_msg_ph:"El teu nivell, dubtes, el que vulguis…", f_send:"Enviar per WhatsApp", f_err:"Escriu el teu nom i tria una activitat.",
+ wa_hi:"Hola Guillem, sóc {v}.", wa_act:"M’interessa: {v}", wa_date:"Data aproximada: {v}", wa_ppl:"Persones: {v}", wa_book:"Hola Guillem, m’agradaria reservar «{v}». Quina disponibilitat tens?", wa_cal:"Hola Guillem, vull una plaça per a «{v}» el {d}.", wa_wait:"Hola Guillem, apunta’m a la llista d’espera de «{v}» del {d}.", wa_default:"Hola Guillem, tinc un dubte:", wa_label:"Dubtes? Escriu-me",
+ foot_tag:"Guia internacional d’alta muntanya al Pirineu, als Alps i a la resta del món.", foot_nav:"Navegació", foot_base:"Base al Pirineu català", foot_rights:"Tots els drets reservats.", foot_priv:"Privadesa", foot_legal:"Avís legal"
+},
+en:{
+ cus_t:"Another mountain in mind?", cus_x:"I design private outings and tailor-made expeditions: Kilimanjaro, Elbrus, the Himalaya or that summit on your list.", cus_b:"Tell me about it",
+ logo_sub:"High mountain guide", nav_about:"About me", nav_exp:"Experiences", nav_crs:"Courses", nav_cal:"Dates", nav_rev:"Reviews", nav_faq:"FAQ", nav_ct:"Contact", hdr_cta:"Book now", menu:"Open menu", lang_label:"Language", alt_label:"Altitude", close:"Close",
+ hero_kicker:"IFMGA international guide in the Pyrenees, the Alps and on expeditions", hero_t1:"Climb higher.", hero_t2:"Always come back.", hero_sub:"I’m Guillem. I’ll take you from your first trail to the highest summit and teach you to move safely in the mountains.", hero_b1:"See experiences", hero_b2:"See courses",
+ about_t:"Hi, I’m Guillem", about_lead:"High mountain guide, sports science graduate and lifelong competitor. For 17 years I’ve been taking people into the mountains and bringing them home.", about_p1:"I grew up in the Pyrenees with skis on my feet. Between ski mountaineering races and ultra trails I learned what really matters up there: preparation, a cool head and reading the terrain.", about_more:"Today I combine racing with my work as an IFMGA international guide. I’ve summited in the Andes, the Alps and the Himalaya, and trained hundreds of people in navigation, avalanche safety and rescue. I plan every detail so all you have to do is enjoy. And if we need to turn back, we turn back: the mountain will still be there.", about_quote:"I race to win. I guide so you get home.", tl_t:"Training and track record",
+ more:"Learn more", less:"Show less", more_about:"Read more", book:"Book", from:"from", halfday:"Half day", day:"day", days:"days", alt_max:"Max. altitude", level:"Level",
+ lvl:["Easy","Moderate","Demanding","Very demanding","Extreme"],
+ exp_t:"Experiences", exp_sub:"From a snowshoe stroll to a three-week expedition. Pick your level and I’ll take you there.", f_all:"All", f_hike:"Hikes and walks", f_trek:"Treks and camping", f_alpine:"High mountains and expeditions",
+ crs_t:"Courses", crs_sub:"Hands-on courses so you can move through the mountains with your own judgement. Little classroom, lots of terrain.", crs_lbl:"Course",
+ why_t:"Why climb with me", why_sub:"The mountains don’t forgive improvisation. So I don’t improvise.", s1:"years guiding", s2:"people guided", s3:"expeditions", s4:"countries",
+ st_t:"How it works",
+ cal_t:"Upcoming dates", cal_sub:"Fixed-date departures with open groups. If none suits you, we’ll set one up for you.", cal_p1:"1 spot left", cal_pn:"{n} spots left", cal_full:"Full", cal_book:"Book a spot", cal_wait:"Join waitlist", cal_empty:"No departures are scheduled right now. Message me and we’ll plan yours.",
+ gal_t:"Gallery", gal_sub:"A few of the places we can go together.",
+ rev_t:"What people who’ve climbed with me say", rev_score:"out of 5 on Google", rev_count:"127 reviews", rev_ver:"Verified review",
+ faq_t:"Frequently asked questions", faq_sub:"Still have a question? Message me on WhatsApp.",
+ ct_t:"Shall we climb together?", ct_sub:"Fill this in and WhatsApp will open with your message ready. I reply within 24 hours.", ct_direct:"Rather message me directly?", ct_open:"Open WhatsApp",
+ f_name:"Name", f_act:"Activity", f_act_ph:"Choose an activity", f_custom:"Other / tailor-made", f_date:"Approximate date", f_people:"People", f_more8:"More than 8", f_msg:"Anything else? (optional)", f_msg_ph:"Your level, questions, anything…", f_send:"Send via WhatsApp", f_err:"Enter your name and choose an activity.",
+ wa_hi:"Hi Guillem, I’m {v}.", wa_act:"I’m interested in: {v}", wa_date:"Approximate date: {v}", wa_ppl:"People: {v}", wa_book:"Hi Guillem, I’d like to book “{v}”. What availability do you have?", wa_cal:"Hi Guillem, I’d like a spot on “{v}” on {d}.", wa_wait:"Hi Guillem, please add me to the waitlist for “{v}” on {d}.", wa_default:"Hi Guillem, I have a question:", wa_label:"Questions? Message me",
+ foot_tag:"International high mountain guide in the Pyrenees, the Alps and beyond.", foot_nav:"Navigation", foot_base:"Based in the Catalan Pyrenees", foot_rights:"All rights reserved.", foot_priv:"Privacy", foot_legal:"Legal notice"
+},
+fr:{
+ cus_t:"Une autre montagne en tête ?", cus_x:"Je conçois des sorties privées et des expéditions sur mesure : Kilimandjaro, Elbrouz, Himalaya ou ce sommet qui te fait rêver.", cus_b:"Raconte-moi",
+ logo_sub:"Guide de haute montagne", nav_about:"À propos", nav_exp:"Expériences", nav_crs:"Formations", nav_cal:"Départs", nav_rev:"Avis", nav_faq:"Questions", nav_ct:"Contact", hdr_cta:"Réserver", menu:"Ouvrir le menu", lang_label:"Langue", alt_label:"Altitude", close:"Fermer",
+ hero_kicker:"Guide international UIAGM dans les Pyrénées, les Alpes et en expédition", hero_t1:"Monte plus haut.", hero_t2:"Reviens toujours.", hero_sub:"Je suis Guillem. Je t’emmène du premier sentier au plus haut sommet et je t’apprends à évoluer en montagne en toute sécurité.", hero_b1:"Voir les expériences", hero_b2:"Voir les formations",
+ about_t:"Salut, moi c’est Guillem", about_lead:"Guide de haute montagne, diplômé en sciences du sport et compétiteur depuis toujours. Depuis 17 ans, j’emmène des gens en montagne et je les ramène à la maison.", about_p1:"J’ai grandi dans les Pyrénées, les skis aux pieds. Entre courses de ski-alpinisme et ultra-trails, j’ai appris ce qui compte vraiment là-haut : la préparation, le sang-froid et la lecture du terrain.", about_more:"Aujourd’hui, je combine la compétition avec mon métier de guide international UIAGM. J’ai atteint des sommets dans les Andes, les Alpes et l’Himalaya, et j’ai formé des centaines de personnes à l’orientation, aux avalanches et au secours. Je prépare chaque détail pour que tu n’aies qu’à profiter. Et s’il faut faire demi-tour, on fait demi-tour : la montagne sera toujours là.", about_quote:"Je cours pour gagner. Je guide pour que tu rentres à la maison.", tl_t:"Formation et parcours",
+ more:"En savoir plus", less:"Voir moins", more_about:"Lire la suite", book:"Réserver", from:"dès", halfday:"Demi-journée", day:"jour", days:"jours", alt_max:"Altitude max.", level:"Niveau",
+ lvl:["Facile","Modéré","Exigeant","Très exigeant","Extrême"],
+ exp_t:"Expériences", exp_sub:"D’une balade en raquettes à une expédition de trois semaines. Choisis ton niveau, je t’y emmène.", f_all:"Toutes", f_hike:"Randonnées et balades", f_trek:"Traversées et bivouac", f_alpine:"Haute montagne et expéditions",
+ crs_t:"Formations", crs_sub:"Des formations pratiques pour évoluer en montagne avec ton propre jugement. Peu de tableau, beaucoup de terrain.", crs_lbl:"Formation",
+ why_t:"Pourquoi grimper avec moi", why_sub:"La montagne ne pardonne pas l’improvisation. Alors je n’improvise pas.", s1:"ans de guidage", s2:"personnes guidées", s3:"expéditions", s4:"pays",
+ st_t:"Comment ça marche",
+ cal_t:"Prochains départs", cal_sub:"Départs à date fixe en groupe ouvert. Si aucun ne te convient, on organise le tien.", cal_p1:"1 place libre", cal_pn:"{n} places libres", cal_full:"Complet", cal_book:"Réserver", cal_wait:"Liste d’attente", cal_empty:"Aucun départ n’est prévu pour l’instant. Écris-moi et on organise le tien.",
+ gal_t:"Galerie", gal_sub:"Quelques-uns des endroits où on peut aller ensemble.",
+ rev_t:"Ce qu’en disent ceux qui ont grimpé avec moi", rev_score:"sur 5 sur Google", rev_count:"127 avis", rev_ver:"Avis vérifié",
+ faq_t:"Questions fréquentes", faq_sub:"Et s’il te reste une question, écris-moi sur WhatsApp.",
+ ct_t:"On grimpe ensemble ?", ct_sub:"Remplis ceci et WhatsApp s’ouvrira avec ton message prêt. Je réponds en moins de 24 heures.", ct_direct:"Tu préfères m’écrire directement ?", ct_open:"Ouvrir WhatsApp",
+ f_name:"Prénom", f_act:"Activité", f_act_ph:"Choisis une activité", f_custom:"Autre / sur mesure", f_date:"Date approximative", f_people:"Personnes", f_more8:"Plus de 8", f_msg:"Autre chose ? (facultatif)", f_msg_ph:"Ton niveau, tes questions, tes envies…", f_send:"Envoyer par WhatsApp", f_err:"Indique ton prénom et choisis une activité.",
+ wa_hi:"Bonjour Guillem, je suis {v}.", wa_act:"Je suis intéressé(e) par : {v}", wa_date:"Date approximative : {v}", wa_ppl:"Personnes : {v}", wa_book:"Bonjour Guillem, j’aimerais réserver « {v} ». Quelles sont tes disponibilités ?", wa_cal:"Bonjour Guillem, je voudrais une place pour « {v} » le {d}.", wa_wait:"Bonjour Guillem, inscris-moi sur la liste d’attente pour « {v} » du {d}.", wa_default:"Bonjour Guillem, j’ai une question :", wa_label:"Des questions ? Écris-moi",
+ foot_tag:"Guide international de haute montagne dans les Pyrénées, les Alpes et au-delà.", foot_nav:"Navigation", foot_base:"Basé dans les Pyrénées catalanes", foot_rights:"Tous droits réservés.", foot_priv:"Confidentialité", foot_legal:"Mentions légales"
+}
+};
+
+/* ---------------- Trayectoria ---------------- */
+var TL = [
+ {y:"2008", es:"Grado en Ciencias de la Actividad Física y del Deporte (INEFC Lleida)", ca:"Grau en Ciències de l’Activitat Física i de l’Esport (INEFC Lleida)", en:"BSc in Physical Activity and Sport Sciences (INEFC Lleida)", fr:"Licence en sciences de l’activité physique et du sport (INEFC Lleida)"},
+ {y:"2010", es:"Técnico Deportivo Superior en Alta Montaña", ca:"Tècnic Esportiu Superior en Alta Muntanya", en:"Advanced Sports Technician in High Mountain", fr:"Technicien sportif supérieur en haute montagne"},
+ {y:"2012", es:"Campeón de Catalunya de esquí de montaña (3 títulos)", ca:"Campió de Catalunya d’esquí de muntanya (3 títols)", en:"Catalan ski mountaineering champion (3 titles)", fr:"Champion de Catalogne de ski-alpinisme (3 titres)"},
+ {y:"2014", es:"Guía de montaña internacional UIAGM / IFMGA", ca:"Guia de muntanya internacional UIAGM / IFMGA", en:"IFMGA / UIAGM international mountain guide", fr:"Guide de haute montagne international UIAGM / IFMGA"},
+ {y:"2016", es:"Top 30 en el Ultra-Trail du Mont-Blanc", ca:"Top 30 a l’Ultra-Trail du Mont-Blanc", en:"Top 30 at the Ultra-Trail du Mont-Blanc", fr:"Top 30 à l’Ultra-Trail du Mont-Blanc"},
+ {y:"2018", es:"Especialista en rescate en montaña y Wilderness First Responder", ca:"Especialista en rescat a muntanya i Wilderness First Responder", en:"Mountain rescue specialist and Wilderness First Responder", fr:"Spécialiste du secours en montagne et Wilderness First Responder"},
+ {y:"2020", es:"Formador acreditado en nivología y avalanchas", ca:"Formador acreditat en nivologia i allaus", en:"Certified snow science and avalanche instructor", fr:"Formateur certifié en nivologie et avalanches"},
+ {y:"2023", es:"Cumbre del Ama Dablam (6.812 m) y sexta expedición al Aconcagua", ca:"Cim de l’Ama Dablam (6.812 m) i sisena expedició a l’Aconcagua", en:"Ama Dablam summit (6,812 m) and sixth Aconcagua expedition", fr:"Sommet de l’Ama Dablam (6 812 m) et sixième expédition à l’Aconcagua"}
+];
+
+/* ---------------- Experiencias ---------------- */
+// cat: hike | trek | alpine · lvl: 1-5 · dur: {h:4} medio día, {d:n} días · alt: metros · price: € desde
+var EXP = [
+ {id:"raquetas", cat:"hike", lvl:1, dur:{h:4}, alt:2200, price:40, img:"1483728642387-6c3bdd6c93e5",
+  t:{es:"Raquetas de nieve al atardecer", ca:"Raquetes de neu a la posta de sol", en:"Sunset snowshoeing", fr:"Raquettes au coucher du soleil"},
+  s:{es:"Paseo invernal por bosques nevados para ver caer el sol desde un collado. Perfecto para empezar.", ca:"Passejada hivernal per boscos nevats per veure com es pon el sol des d’un coll. Perfecta per començar.", en:"A winter walk through snowy forests to watch the sun go down from a mountain pass. Perfect for beginners.", fr:"Balade hivernale en forêt enneigée pour voir le soleil se coucher depuis un col. Idéal pour débuter."},
+  m:{es:"Te dejo raquetas y bastones. Subimos a ritmo tranquilo, paramos a tomar algo caliente y bajamos con frontal. No necesitas experiencia, solo ganas y ropa de abrigo.", ca:"Et deixo raquetes i bastons. Pugem a ritme tranquil, parem a prendre alguna cosa calenta i baixem amb frontal. No cal experiència, només ganes i roba d’abric.", en:"I provide snowshoes and poles. We climb at an easy pace, stop for a hot drink and come down by headlamp. No experience needed, just warm clothes and good spirits.", fr:"Je te prête raquettes et bâtons. On monte tranquillement, on s’arrête pour une boisson chaude et on redescend à la frontale. Aucune expérience requise, juste des vêtements chauds."}},
+ {id:"lagos", cat:"hike", lvl:2, dur:{d:1}, alt:2450, price:45, img:"1501785888041-af3ef285b470",
+  t:{es:"Ruta de los lagos del Pirineo", ca:"Ruta dels estanys del Pirineu", en:"Pyrenean lakes trail", fr:"Randonnée des lacs pyrénéens"},
+  s:{es:"Una jornada entre lagos de alta montaña, prados y crestas. El mejor primer contacto con el Pirineo.", ca:"Una jornada entre estanys d’alta muntanya, prats i carenes. El millor primer contacte amb el Pirineu.", en:"A day among high mountain lakes, meadows and ridges. The best first taste of the Pyrenees.", fr:"Une journée entre lacs d’altitude, prairies et crêtes. Le meilleur premier contact avec les Pyrénées."},
+  m:{es:"Unos 14 km y 800 m de desnivel con paradas para fotos, baño si apetece y explicaciones sobre fauna, flora y lectura del terreno. Ideal para familias con niños a partir de 10 años.", ca:"Uns 14 km i 800 m de desnivell amb parades per fer fotos, banyar-se si ve de gust i explicacions sobre fauna, flora i lectura del terreny. Ideal per a famílies amb nens a partir de 10 anys.", en:"About 14 km and 800 m of ascent, with stops for photos, a swim if you fancy it and tips on wildlife, plants and reading the terrain. Great for families with kids aged 10 and up.", fr:"Environ 14 km et 800 m de dénivelé, avec des pauses photo, une baignade si le cœur t’en dit et des explications sur la faune, la flore et la lecture du terrain. Idéal pour les familles avec enfants dès 10 ans."}},
+ {id:"vivac", cat:"trek", lvl:2, dur:{d:2}, alt:2600, price:180, img:"1478131143081-80f7f84ca84d",
+  t:{es:"Vivac bajo las estrellas", ca:"Bivac sota les estrelles", en:"Bivouac under the stars", fr:"Bivouac sous les étoiles"},
+  s:{es:"Subimos con la mochila, montamos campamento junto a un lago y dormimos al raso a 2.500 metros.", ca:"Pugem amb la motxilla, muntem campament al costat d’un estany i dormim al ras a 2.500 metres.", en:"We hike up with our packs, set up camp by a lake and sleep under the open sky at 2,500 metres.", fr:"On monte sac au dos, on installe le camp au bord d’un lac et on dort à la belle étoile à 2 500 mètres."},
+  m:{es:"Incluye tienda, esterilla, cena y desayuno de montaña. Te enseño a montar un campamento de bajo impacto, cocinar en altura y elegir dónde dormir con seguridad.", ca:"Inclou tenda, màrfega, sopar i esmorzar de muntanya. T’ensenyo a muntar un campament de baix impacte, cuinar en alçada i triar on dormir amb seguretat.", en:"Tent, sleeping mat, dinner and mountain breakfast included. I’ll show you how to set up a low-impact camp, cook at altitude and choose a safe place to sleep.", fr:"Tente, matelas, dîner et petit-déjeuner de montagne inclus. Je t’apprends à installer un camp à faible impact, cuisiner en altitude et choisir un endroit sûr pour dormir."}},
+ {id:"carros", cat:"trek", lvl:3, dur:{d:5}, alt:2800, price:590, img:"1551632811-561732d1e306",
+  t:{es:"Travesía Carros de Foc", ca:"Travessa Carros de Foc", en:"Carros de Foc trek", fr:"Traversée Carros de Foc"},
+  s:{es:"Cinco días enlazando refugios por el corazón de Aigüestortes. La gran travesía clásica del Pirineo.", ca:"Cinc dies enllaçant refugis pel cor d’Aigüestortes. La gran travessa clàssica del Pirineu.", en:"Five days linking mountain huts through the heart of Aigüestortes. The classic great traverse of the Pyrenees.", fr:"Cinq jours de refuge en refuge au cœur d’Aigüestortes. La grande traversée classique des Pyrénées."},
+  m:{es:"Unos 55 km y 9 refugios guardados. Yo gestiono reservas, ritmo y meteorología; tú solo caminas y disfrutas. Pide buena forma física: jornadas de 6 a 8 horas.", ca:"Uns 55 km i 9 refugis guardats. Jo gestiono reserves, ritme i meteorologia; tu només camines i gaudeixes. Cal bona forma física: jornades de 6 a 8 hores.", en:"Around 55 km and 9 staffed huts. I handle bookings, pace and weather; you just walk and enjoy. You’ll need good fitness: 6 to 8 hour days.", fr:"Environ 55 km et 9 refuges gardés. Je gère les réservations, le rythme et la météo ; toi, tu marches et tu profites. Bonne condition physique requise : étapes de 6 à 8 heures."}},
+ {id:"aneto", cat:"alpine", lvl:3, dur:{d:2}, alt:3404, price:260, img:"1491555103944-7c647fd857e6",
+  t:{es:"Aneto, techo del Pirineo", ca:"Aneto, sostre del Pirineu", en:"Aneto, roof of the Pyrenees", fr:"Aneto, toit des Pyrénées"},
+  s:{es:"Glaciar, cresta y el famoso Paso de Mahoma para pisar la cumbre más alta de la cordillera.", ca:"Glacera, carena i el famós Pas de Mahoma per trepitjar el cim més alt de la serralada.", en:"Glacier, ridge and the famous Mahoma Pass to stand on the highest summit of the range.", fr:"Glacier, arête et le célèbre Pas de Mahomet pour fouler le plus haut sommet de la chaîne."},
+  m:{es:"Dormimos en el refugio de La Renclusa y salimos de madrugada. Material técnico incluido (casco, arnés, crampones y piolet). Necesitas resistencia; la técnica te la enseño yo antes de subir.", ca:"Dormim al refugi de la Renclusa i sortim de matinada. Material tècnic inclòs (casc, arnès, grampons i piolet). Cal resistència; la tècnica te l’ensenyo jo abans de pujar.", en:"We sleep at La Renclusa hut and set off before dawn. Technical gear included (helmet, harness, crampons and ice axe). You need stamina; I’ll teach you the technique before we go up.", fr:"Nuit au refuge de La Renclusa et départ avant l’aube. Matériel technique inclus (casque, baudrier, crampons et piolet). Il te faut de l’endurance ; la technique, je te l’apprends avant de monter."}},
+ {id:"montblanc", cat:"alpine", lvl:4, dur:{d:6}, alt:4808, price:1890, img:"1454496522488-7a8e488e8606",
+  t:{es:"Mont Blanc, 4.808 m", ca:"Mont Blanc, 4.808 m", en:"Mont Blanc, 4,808 m", fr:"Mont Blanc, 4 808 m"},
+  s:{es:"Seis días de aclimatación y técnica en los Alpes para subir al techo de Europa occidental.", ca:"Sis dies d’aclimatació i tècnica als Alps per pujar al sostre de l’Europa occidental.", en:"Six days of acclimatisation and technique in the Alps to climb the roof of Western Europe.", fr:"Six jours d’acclimatation et de technique dans les Alpes pour gravir le toit de l’Europe occidentale."},
+  m:{es:"Dos cumbres de aclimatación de más de 3.500 m y ataque final por la ruta del Goûter. Máximo 2 personas por guía el día de cumbre. Requiere experiencia previa con crampones.", ca:"Dos cims d’aclimatació de més de 3.500 m i atac final per la ruta del Goûter. Màxim 2 persones per guia el dia de cim. Cal experiència prèvia amb grampons.", en:"Two acclimatisation peaks above 3,500 m and a final push via the Goûter route. Maximum 2 climbers per guide on summit day. Previous crampon experience required.", fr:"Deux sommets d’acclimatation de plus de 3 500 m puis ascension finale par la voie du Goûter. 2 personnes maximum par guide le jour du sommet. Expérience des crampons requise."}},
+ {id:"aconcagua", feat:true, cat:"alpine", lvl:5, dur:{d:20}, alt:6961, price:4900, img:"1464822759023-fed622ff2c3b",
+  t:{es:"Expedición Aconcagua, 6.961 m", ca:"Expedició Aconcagua, 6.961 m", en:"Aconcagua expedition, 6,961 m", fr:"Expédition Aconcagua, 6 961 m"},
+  s:{es:"La montaña más alta de América. Tres semanas de expedición para quien quiere dar el gran salto.", ca:"La muntanya més alta d’Amèrica. Tres setmanes d’expedició per a qui vol fer el gran salt.", en:"The highest mountain in the Americas. A three-week expedition for those ready to take the big leap.", fr:"Le plus haut sommet des Amériques. Trois semaines d’expédition pour ceux qui veulent franchir le grand pas."},
+  m:{es:"Logística completa desde Mendoza: permisos, mulas, campamentos y un plan de aclimatación probado en mis 6 expediciones a esta montaña. Meses antes te preparo con un plan de entrenamiento personalizado.", ca:"Logística completa des de Mendoza: permisos, mules, campaments i un pla d’aclimatació provat en les meves 6 expedicions a aquesta muntanya. Mesos abans et preparo amb un pla d’entrenament personalitzat.", en:"Full logistics from Mendoza: permits, mules, camps and an acclimatisation plan proven on my 6 expeditions to this mountain. Months ahead, I’ll prepare you with a personalised training plan.", fr:"Logistique complète depuis Mendoza : permis, mules, camps et un plan d’acclimatation éprouvé lors de mes 6 expéditions sur cette montagne. Des mois avant, je te prépare avec un plan d’entraînement personnalisé."}}
+];
+
+/* ---------------- Formación ---------------- */
+var ICON = {
+ compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+ snow:'<path d="M12 2v20M3.3 7l17.4 10M20.7 7L3.3 17"/><path d="M9.5 3.8L12 6l2.5-2.2M9.5 20.2L12 18l2.5 2.2"/>',
+ beacon:'<rect x="7" y="9" width="10" height="12" rx="2.5"/><path d="M9.3 6.3a4 4 0 015.4 0M6.8 3.8a7.6 7.6 0 0110.4 0M12 13v3"/>',
+ rope:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3.5v5M12 15.5v5M3.5 12h5M15.5 12h5"/>',
+ aid:'<rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V4.5h6V7M12 10.5v6M9 13.5h6"/>',
+ axe:'<path d="M5 21L16.5 9.5"/><path d="M13 4c2.6-.6 5 .4 7 2.5M13 4l7 7M13 4c-.8 1.3-1 2.8-.5 4"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ peak:'<path d="M2 20L9 7l4 6 3-4 6 11z"/>',
+ shield:'<path d="M12 3l8 3v6c0 4.6-3.4 8.4-8 9-4.6-.6-8-4.4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+ badge:'<circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/>',
+ group:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.6"/><path d="M17.5 14.6c2.3.4 3.7 2.1 4 5.4"/>',
+ flag:'<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>',
+ chev:'<path d="M6 9l6 6 6-6"/>'
+};
+function svg(name, extra){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"'+(extra||"")+'>'+ICON[name]+'</svg>'; }
+
+var CRS = [
+ {id:"orientacion", ic:"compass", h:8, price:70,
+  t:{es:"Orientación con y sin brújula", ca:"Orientació amb i sense brúixola", en:"Navigation with and without a compass", fr:"Orientation avec et sans boussole"},
+  s:{es:"Mapa, brújula, GPS y, sobre todo, saber qué hacer cuando la batería se acaba.", ca:"Mapa, brúixola, GPS i, sobretot, saber què fer quan s’acaba la bateria.", en:"Map, compass, GPS and, above all, knowing what to do when the battery dies.", fr:"Carte, boussole, GPS et surtout savoir quoi faire quand la batterie lâche."},
+  m:{es:"Lectura de mapas topográficos, rumbos, triangulación y orientación natural por el sol, las estrellas y el relieve. Teoría breve y casi todo el día practicando en el terreno.", ca:"Lectura de mapes topogràfics, rumbs, triangulació i orientació natural pel sol, les estrelles i el relleu. Teoria breu i gairebé tot el dia practicant sobre el terreny.", en:"Reading topographic maps, bearings, triangulation and natural navigation using the sun, stars and landforms. Short theory, then most of the day practising in the field.", fr:"Lecture de cartes topographiques, azimuts, triangulation et orientation naturelle grâce au soleil, aux étoiles et au relief. Courte théorie, puis presque toute la journée sur le terrain."}},
+ {id:"nivologia", ic:"snow", h:16, price:220,
+  t:{es:"Nivología y prevención de avalanchas", ca:"Nivologia i prevenció d’allaus", en:"Snow science and avalanche prevention", fr:"Nivologie et prévention des avalanches"},
+  s:{es:"Aprende a leer la nieve, interpretar el boletín de peligro y elegir itinerarios seguros.", ca:"Aprèn a llegir la neu, interpretar el butlletí de perill i triar itineraris segurs.", en:"Learn to read the snow, interpret the avalanche bulletin and choose safe routes.", fr:"Apprends à lire la neige, interpréter le bulletin de risque et choisir des itinéraires sûrs."},
+  m:{es:"Dos días sobre tipos de alud, perfil y test de estabilidad del manto, factores humanos en la toma de decisiones y planificación de salidas invernales, según los estándares europeos EAWS.", ca:"Dos dies sobre tipus d’allau, perfil i test d’estabilitat del mantell, factors humans en la presa de decisions i planificació de sortides hivernals, segons els estàndards europeus EAWS.", en:"Two days on avalanche types, snow profiles and stability tests, human factors in decision-making and planning winter outings, following European EAWS standards.", fr:"Deux jours sur les types d’avalanches, le profil et les tests de stabilité du manteau, les facteurs humains et la préparation des sorties hivernales, selon les standards européens EAWS."}},
+ {id:"arva", ic:"beacon", h:8, price:120,
+  t:{es:"Qué hacer si ocurre una avalancha", ca:"Què fer si hi ha una allau", en:"What to do if an avalanche happens", fr:"Que faire en cas d’avalanche"},
+  s:{es:"Búsqueda con ARVA, sondeo y paleo eficaz. Los primeros 15 minutos lo deciden todo.", ca:"Cerca amb ARVA, sondeig i palejat eficaç. Els primers 15 minuts ho decideixen tot.", en:"Transceiver search, probing and efficient digging. The first 15 minutes decide everything.", fr:"Recherche DVA, sondage et pelletage efficace. Les 15 premières minutes décident de tout."},
+  m:{es:"Simulacros reales con una y varias víctimas, organización del grupo, paleo en cinta transportadora y aviso a emergencias. Si no tienes material, te lo dejo yo.", ca:"Simulacres reals amb una i diverses víctimes, organització del grup, palejat en cinta transportadora i avís a emergències. Si no tens material, te’l deixo jo.", en:"Realistic drills with one and multiple burials, group organisation, conveyor-belt shovelling and calling emergency services. If you don’t have the gear, I’ll lend it.", fr:"Exercices réalistes avec une ou plusieurs victimes, organisation du groupe, pelletage en tapis roulant et alerte des secours. Si tu n’as pas le matériel, je te le prête."}},
+ {id:"rescate", ic:"rope", h:16, price:260,
+  t:{es:"Rescate en alta montaña", ca:"Rescat en alta muntanya", en:"High mountain rescue", fr:"Secours en haute montagne"},
+  s:{es:"Técnicas de cuerda, polipastos y rescate en grieta para no depender de nadie.", ca:"Tècniques de corda, polispasts i rescat en esquerda per no dependre de ningú.", en:"Rope techniques, pulley systems and crevasse rescue so you never depend on anyone.", fr:"Techniques de corde, mouflages et sauvetage en crevasse pour ne dépendre de personne."},
+  m:{es:"Para alpinistas con algo de experiencia: montaje de reuniones, sistemas de mufla, autorrescate en grieta y evacuación improvisada de un herido. Mucha práctica en glaciar real.", ca:"Per a alpinistes amb una mica d’experiència: muntatge de reunions, sistemes de mufla, autorescat en esquerda i evacuació improvisada d’un ferit. Molta pràctica en glacera real.", en:"For climbers with some experience: building anchors, hauling systems, crevasse self-rescue and improvised evacuation of an injured person. Lots of practice on a real glacier.", fr:"Pour alpinistes ayant un peu d’expérience : relais, mouflages, auto-sauvetage en crevasse et évacuation improvisée d’un blessé. Beaucoup de pratique sur un vrai glacier."}},
+ {id:"auxilios", ic:"aid", h:16, price:160,
+  t:{es:"Primeros auxilios en montaña", ca:"Primers auxilis a muntanya", en:"Mountain first aid", fr:"Premiers secours en montagne"},
+  s:{es:"Cómo actuar ante una lesión cuando la ayuda está a horas de distancia.", ca:"Com actuar davant d’una lesió quan l’ajuda és a hores de distància.", en:"How to respond to an injury when help is hours away.", fr:"Comment réagir face à une blessure quand les secours sont à des heures."},
+  m:{es:"Valoración del herido, hipotermia, congelaciones, mal de altura, fracturas e inmovilizaciones con material improvisado. Escenarios prácticos al aire libre y certificado de asistencia.", ca:"Valoració del ferit, hipotèrmia, congelacions, mal d’altura, fractures i immobilitzacions amb material improvisat. Escenaris pràctics a l’aire lliure i certificat d’assistència.", en:"Casualty assessment, hypothermia, frostbite, altitude sickness, fractures and splinting with improvised gear. Outdoor scenarios and a certificate of attendance.", fr:"Bilan de la victime, hypothermie, gelures, mal des montagnes, fractures et immobilisations avec du matériel improvisé. Mises en situation en extérieur et attestation remise."}},
+ {id:"alpinismo", ic:"axe", h:16, price:240,
+  t:{es:"Iniciación al alpinismo", ca:"Iniciació a l’alpinisme", en:"Introduction to mountaineering", fr:"Initiation à l’alpinisme"},
+  s:{es:"Crampones, piolet y progresión en cordada: el paso del senderismo a la alta montaña.", ca:"Grampons, piolet i progressió en cordada: el pas del senderisme a l’alta muntanya.", en:"Crampons, ice axe and moving roped together: the step from hiking to high mountains.", fr:"Crampons, piolet et progression en cordée : le passage de la randonnée à la haute montagne."},
+  m:{es:"Técnica de crampones en distintas pendientes, autodetención con piolet, encordamiento en glaciar y nudos básicos. Terminamos con una pequeña cumbre invernal para ponerlo todo en práctica.", ca:"Tècnica de grampons en diferents pendents, autodetenció amb piolet, encordament en glacera i nusos bàsics. Acabem amb un petit cim hivernal per posar-ho tot en pràctica.", en:"Crampon technique on different slopes, ice axe self-arrest, glacier roping and essential knots. We finish with a small winter summit to put it all into practice.", fr:"Technique de crampons sur différentes pentes, auto-arrêt au piolet, encordement sur glacier et nœuds de base. On termine par un petit sommet hivernal pour tout mettre en pratique."}}
+];
+
+/* ---------------- Por qué conmigo ---------------- */
+var WHY = [
+ {ic:"badge", t:{es:"Guía internacional UIAGM", ca:"Guia internacional UIAGM", en:"IFMGA international guide", fr:"Guide international UIAGM"},
+  x:{es:"La titulación más exigente del mundo. Me permite guiar legalmente en los Alpes, los Andes o el Himalaya.", ca:"La titulació més exigent del món. Em permet guiar legalment als Alps, als Andes o a l’Himàlaia.", en:"The world’s most demanding guiding qualification. It lets me guide legally in the Alps, the Andes or the Himalaya.", fr:"La qualification la plus exigeante au monde. Elle me permet de guider légalement dans les Alpes, les Andes ou l’Himalaya."}},
+ {ic:"shield", t:{es:"Seguro incluido", ca:"Assegurança inclosa", en:"Insurance included", fr:"Assurance incluse"},
+  x:{es:"Todas las actividades incluyen seguro de accidentes y de responsabilidad civil. Sin letra pequeña.", ca:"Totes les activitats inclouen assegurança d’accidents i de responsabilitat civil. Sense lletra petita.", en:"Every activity includes accident and liability insurance. No small print.", fr:"Toutes les activités incluent une assurance accident et responsabilité civile. Sans petites lignes."}},
+ {ic:"group", t:{es:"Grupos pequeños", ca:"Grups petits", en:"Small groups", fr:"Petits groupes"},
+  x:{es:"Máximo 8 personas en senderismo y 2 por guía en alta montaña. Así puedo estar pendiente de ti.", ca:"Màxim 8 persones en senderisme i 2 per guia en alta muntanya. Així puc estar pendent de tu.", en:"Up to 8 people on hikes and 2 per guide in high mountains, so I can keep an eye on you.", fr:"8 personnes maximum en randonnée et 2 par guide en haute montagne, pour garder un œil sur toi."}},
+ {ic:"flag", t:{es:"Mentalidad de competidor", ca:"Mentalitat de competidor", en:"A racer’s mindset", fr:"Un mental de compétiteur"},
+  x:{es:"Planifico cada salida como una carrera: meteo, ritmo y plan B. Y sé darme la vuelta a tiempo.", ca:"Planifico cada sortida com una cursa: meteo, ritme i pla B. I sé fer mitja volta a temps.", en:"I plan every outing like a race: weather, pace and a plan B. And I know when to turn back.", fr:"Je prépare chaque sortie comme une course : météo, rythme et plan B. Et je sais faire demi-tour à temps."}}
+];
+
+/* ---------------- Pasos ---------------- */
+var STEPS = [
+ {t:{es:"Escríbeme", ca:"Escriu-me", en:"Message me", fr:"Écris-moi"},
+  x:{es:"Cuéntame qué te apetece y tu nivel por WhatsApp o con el formulario.", ca:"Explica’m què et ve de gust i el teu nivell per WhatsApp o amb el formulari.", en:"Tell me what you fancy and your level via WhatsApp or the form.", fr:"Dis-moi ce qui te tente et ton niveau par WhatsApp ou via le formulaire."}},
+ {t:{es:"Te propongo un plan", ca:"Et proposo un pla", en:"I suggest a plan", fr:"Je te propose un plan"},
+  x:{es:"Fecha, ruta, material y precio cerrado. Si hace falta, adaptamos la actividad a ti.", ca:"Data, ruta, material i preu tancat. Si cal, adaptem l’activitat a tu.", en:"Date, route, gear and a fixed price. If needed, we tailor the activity to you.", fr:"Date, itinéraire, matériel et prix fixe. Si besoin, on adapte l’activité à toi."}},
+ {t:{es:"Reservas tu plaza", ca:"Reserves la teva plaça", en:"Book your spot", fr:"Tu réserves ta place"},
+  x:{es:"Con una señal del 30 % la plaza es tuya. El resto, una semana antes.", ca:"Amb una paga i senyal del 30 % la plaça és teva. La resta, una setmana abans.", en:"A 30% deposit secures your place. The rest is due one week before.", fr:"Un acompte de 30 % bloque ta place. Le solde, une semaine avant."}},
+ {t:{es:"Subimos", ca:"Pugem", en:"We climb", fr:"On monte"},
+  x:{es:"Te recojo en el punto acordado y nos vamos a la montaña. Tú disfrutas; yo me ocupo del resto.", ca:"Et recullo al punt acordat i marxem cap a la muntanya. Tu gaudeixes; jo m’ocupo de la resta.", en:"I pick you up at the agreed meeting point and off we go. You enjoy; I take care of the rest.", fr:"Je te récupère au point de rendez-vous et on part en montagne. Tu profites ; je m’occupe du reste."}}
+];
+
+/* ---------------- Preguntas frecuentes ---------------- */
+var FAQ = [
+ {q:{es:"¿Necesito experiencia previa?", ca:"Necessito experiència prèvia?", en:"Do I need previous experience?", fr:"Faut-il de l’expérience ?"},
+  a:{es:"Depende de la actividad. Los paseos, las raquetas y la ruta de los lagos están pensados para empezar. Para alta montaña te pido experiencia previa, y si no la tienes, te preparo antes con un curso.", ca:"Depèn de l’activitat. Les passejades, les raquetes i la ruta dels estanys estan pensades per començar. Per a alta muntanya et demano experiència prèvia, i si no en tens, et preparo abans amb un curs.", en:"It depends on the activity. Walks, snowshoeing and the lakes trail are designed for beginners. For high mountains I ask for some experience, and if you don’t have it, I’ll prepare you with a course first.", fr:"Ça dépend de l’activité. Les balades, les raquettes et la randonnée des lacs sont pensées pour débuter. Pour la haute montagne, je demande de l’expérience ; si tu n’en as pas, je te prépare avant avec une formation."}},
+ {q:{es:"¿Qué material necesito?", ca:"Quin material necessito?", en:"What gear do I need?", fr:"De quel matériel ai-je besoin ?"},
+  a:{es:"Al reservar te envío una lista detallada. El material técnico (casco, arnés, crampones, piolet, ARVA y raquetas) lo pongo yo sin coste extra.", ca:"En reservar t’envio una llista detallada. El material tècnic (casc, arnès, grampons, piolet, ARVA i raquetes) el poso jo sense cost extra.", en:"When you book I’ll send you a detailed list. Technical gear (helmet, harness, crampons, ice axe, transceiver and snowshoes) is provided at no extra cost.", fr:"À la réservation, je t’envoie une liste détaillée. Le matériel technique (casque, baudrier, crampons, piolet, DVA et raquettes) est fourni sans supplément."}},
+ {q:{es:"¿Y si hace mal tiempo?", ca:"I si fa mal temps?", en:"What if the weather is bad?", fr:"Et s’il fait mauvais ?"},
+  a:{es:"La seguridad va primero. Si la previsión no es buena, te propongo otra fecha o una ruta alternativa. Si ninguna te encaja, te devuelvo el importe íntegro.", ca:"La seguretat va primer. Si la previsió no és bona, et proposo una altra data o una ruta alternativa. Si cap no t’encaixa, et retorno l’import íntegre.", en:"Safety comes first. If the forecast looks bad, I’ll offer another date or an alternative route. If neither works for you, you get a full refund.", fr:"La sécurité passe avant tout. Si la météo n’est pas bonne, je te propose une autre date ou un autre itinéraire. Si rien ne te convient, je te rembourse intégralement."}},
+ {q:{es:"¿Estoy cubierto por un seguro?", ca:"Estic cobert per una assegurança?", en:"Am I insured?", fr:"Suis-je assuré ?"},
+  a:{es:"Sí. Todas las actividades incluyen seguro de accidentes. En expediciones internacionales te ayudo a contratar un seguro específico con rescate en altura.", ca:"Sí. Totes les activitats inclouen assegurança d’accidents. En expedicions internacionals t’ajudo a contractar una assegurança específica amb rescat en alçada.", en:"Yes. Every activity includes accident insurance. For international expeditions I’ll help you get specific cover that includes high-altitude rescue.", fr:"Oui. Toutes les activités incluent une assurance accident. Pour les expéditions internationales, je t’aide à souscrire une assurance spécifique avec secours en altitude."}},
+ {q:{es:"¿Puedo hacer una salida privada?", ca:"Puc fer una sortida privada?", en:"Can I book a private outing?", fr:"Puis-je réserver une sortie privée ?"},
+  a:{es:"Claro. Cualquier experiencia o curso se puede hacer en privado, para tu familia, tus amigos o tu empresa, en la fecha que mejor os vaya.", ca:"És clar. Qualsevol experiència o curs es pot fer en privat, per a la teva família, els teus amics o la teva empresa, en la data que millor us vagi.", en:"Of course. Any experience or course can be private, for your family, friends or company, on the date that suits you best.", fr:"Bien sûr. Toute expérience ou formation peut se faire en privé, pour ta famille, tes amis ou ton entreprise, à la date qui vous convient."}},
+ {q:{es:"¿Cómo se paga y qué pasa si cancelo?", ca:"Com es paga i què passa si cancel·lo?", en:"How do I pay and what if I cancel?", fr:"Comment payer et que se passe-t-il si j’annule ?"},
+  a:{es:"Reservas con un 30 % por transferencia o Bizum y pagas el resto una semana antes. Si cancelas con más de 15 días de antelación, te devuelvo la señal.", ca:"Reserves amb un 30 % per transferència o Bizum i pagues la resta una setmana abans. Si cancel·les amb més de 15 dies d’antelació, et retorno la paga i senyal.", en:"Book with a 30% deposit by bank transfer and pay the rest one week before. Cancel more than 15 days ahead and your deposit is refunded.", fr:"Tu réserves avec 30 % par virement et tu règles le solde une semaine avant. Si tu annules plus de 15 jours avant, je te rembourse l’acompte."}}
+];
+
+/* ---------------- Opiniones (EJEMPLO: cambiar por reseñas reales) ---------------- */
+var REV = [
+ {n:"Marta Puig", c:"#1F74A6", act:"aneto", txt:"Vaig pujar l’Aneto amb en Guillem sense haver posat mai uns grampons. Ens va preparar el dia abans, va controlar el ritme a la perfecció i al Pas de Mahoma em vaig sentir segura en tot moment. Un crack."},
+ {n:"Javier Ortega", c:"#0E7C66", act:"montblanc", txt:"Llevaba años queriendo subir al Mont Blanc. Con Guillem todo estuvo planificado al milímetro: aclimatación, meteo y ritmo. Se nota que viene de la competición. Hicimos cumbre el primer día de ventana buena."},
+ {n:"Sophie Laurent", c:"#8E4FB5", act:"nivologia", txt:"Formation nivologie au top. Très pédagogue, beaucoup de terrain et des exercices DVA réalistes. Je me sens enfin capable de préparer mes sorties de ski de rando en autonomie."},
+ {n:"Tom Hughes", c:"#C2563A", act:"carros", txt:"Five unforgettable days on the Carros de Foc. Guillem sorted every hut and adapted the stages when the weather turned. Fit, funny and incredibly knowledgeable. Already planning Aconcagua with him."},
+ {n:"Laura Benítez", c:"#2E6FD8", act:"vivac", txt:"Hicimos el vivac con mis dos hijos adolescentes y fue la mejor experiencia del verano. Guillem les enseñó a montar el campamento y a orientarse con las estrellas. Repetiremos seguro."},
+ {n:"Pere Solé", c:"#3A7D2E", act:"orientacion", txt:"El curs d’orientació és molt pràctic. En una sola jornada vaig aprendre més que en anys sortint sol a la muntanya. Ara ja no depenc del mòbil."}
+];
+
+/* ---------------- Galería ---------------- */
+var GAL = [
+ {img:"1506905925346-21bda4d32df4", alt:"Amanecer sobre un mar de nubes"},
+ {img:"1501555088652-021faa106b9b", alt:"Montañero en una cresta"},
+ {img:"1478131143081-80f7f84ca84d", alt:"Tienda de campaña bajo las estrellas"},
+ {img:"1522163182402-834f871fd851", alt:"Escalada en roca"},
+ {img:"1470071459604-3b5ec3a7fe05", alt:"Valle entre la niebla"},
+ {img:"1483728642387-6c3bdd6c93e5", alt:"Cresta nevada"},
+ {img:"1464822759023-fed622ff2c3b", alt:"Cordillera nevada"},
+ {img:"1469474968028-56623f02e42e", alt:"Valle de montaña al atardecer"}
+];
+
+/* ---------------- Cimas del ticker ---------------- */
+var PEAKS = [["Aneto",3404],["Pica d’Estats",3143],["Monte Perdido",3355],["Mont Blanc",4808],["Matterhorn",4478],["Gran Paradiso",4061],["Aconcagua",6961],["Huascarán",6768],["Ama Dablam",6812],["Island Peak",6189]];
+
+/* =====================================================================
+   UTILIDADES
+   ===================================================================== */
+function $(s, c){ return (c||root).querySelector(s); }
+function $$(s, c){ return [].slice.call((c||root).querySelectorAll(s)); }
+function t(k){ var v = T[lang] && T[lang][k]; return v != null ? v : (T.es[k] != null ? T.es[k] : ""); }
+function L(o){ return o ? (o[lang] || o.es) : ""; }
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function num(n){ try { return Number(n).toLocaleString(LOC[lang]); } catch(e){ return String(n); } }
+function eur(n){ try { return new Intl.NumberFormat(LOC[lang], {style:"currency", currency:"EUR", maximumFractionDigits:0}).format(n); } catch(e){ return n + " €"; } }
+function dur(d){ if (d.h) return d.h < 6 ? t("halfday") : d.h + " h"; return d.d + " " + (d.d === 1 ? t("day") : t("days")); }
+function find(id){ var i; for (i=0;i<EXP.length;i++) if (EXP[i].id===id) return EXP[i]; for (i=0;i<CRS.length;i++) if (CRS[i].id===id) return CRS[i]; return null; }
+function waOpen(text){ window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(text), "_blank", "noopener"); }
+function fill(s, v, d){ return s.replace("{v}", v).replace("{d}", d || ""); }
+function stars(){ var s="",i; for(i=0;i<5;i++) s+='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17.4l-6.1 3.5 1.5-6.8L2.2 9.5l6.9-.7z"/></svg>'; return '<span class="gg-stars" role="img" aria-label="5/5">'+s+'</span>'; }
+function imgFallback(scope){ $$("img", scope).forEach(function(im){ im.addEventListener("error", function(){ im.classList.add("gg-x"); }); }); }
+function moreBtn(id){ return '<button class="gg-link-btn" type="button" data-more aria-expanded="false" aria-controls="'+id+'"><span data-lbl>'+esc(t("more"))+'</span>'+svg("chev",' stroke-width="2.2"')+'</button>'; }
+
+var GOOGLE_G = '<svg class="gg-g" viewBox="0 0 48 48" aria-label="Google"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.5z"/></svg>';
+var TICK = '<svg viewBox="0 0 24 24" role="img" aria-label="{a}"><circle cx="12" cy="12" r="11" fill="#1A73E8"/><path d="M7 12.4l3.2 3.2L17 8.8" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+/* =====================================================================
+   RENDERIZADO
+   ===================================================================== */
+var curFilter = "all";
+var catName = function(c){ return t(c==="hike" ? "f_hike" : c==="trek" ? "f_trek" : "f_alpine"); };
+
+function renderTL(){
+  $("#gg-tl").innerHTML = TL.map(function(x){ return '<li><time>'+x.y+'</time><span>'+esc(L(x))+'</span></li>'; }).join("");
+}
+
+function renderExp(){
+  var g = $("#gg-exp");
+  g.innerHTML = EXP.map(function(e){
+    var bars = "", i; for (i=1;i<=5;i++) bars += '<i class="'+(i<=e.lvl?"on":"")+'"></i>';
+    var mid = "gg-m-" + e.id;
+    return '<article class="gg-exp'+(e.feat?' feat':'')+'" data-cat="'+e.cat+'">'+
+      '<div class="gg-exp-img"><img src="'+U(e.img,800)+'" alt="'+esc(L(e.t))+'" loading="lazy"><span class="gg-exp-cat">'+esc(catName(e.cat))+'</span><span class="gg-price"><small>'+esc(t("from"))+'</small>'+eur(e.price)+'</span></div>'+
+      '<div class="gg-exp-b"><h3>'+esc(L(e.t))+'</h3>'+
+      '<ul class="gg-meta"><li>'+svg("clock")+esc(dur(e.dur))+'</li><li>'+svg("peak")+esc(t("alt_max"))+' '+num(e.alt)+' m</li></ul>'+
+      '<div class="gg-lvl" role="img" aria-label="'+esc(t("level"))+': '+esc(t("lvl")[e.lvl-1])+'">'+bars+'<em>'+esc(t("lvl")[e.lvl-1])+'</em></div>'+
+      '<p>'+esc(L(e.s))+'</p>'+
+      '<div class="gg-more" id="'+mid+'"><div class="gg-more-in"><p>'+esc(L(e.m))+'</p></div></div>'+
+      '<div class="gg-act">'+moreBtn(mid)+'<button type="button" class="gg-btn gg-btn-p gg-btn-sm" data-wa="book" data-id="'+e.id+'">'+esc(t("book"))+'</button></div>'+
+      '</div></article>';
+  }).join("") +
+  '<article class="gg-exp gg-exp-custom" data-cat="any"><svg viewBox="0 0 34 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 24L12 5.5l5.5 9 4-6L32.5 24"/></svg>'+
+  '<h3>'+esc(t("cus_t"))+'</h3><p>'+esc(t("cus_x"))+'</p><button type="button" class="gg-btn gg-btn-p gg-btn-sm" data-wa="default">'+esc(t("cus_b"))+'</button></article>';
+  imgFallback(g); applyFilter(false); bindTilt();
+}
+
+function applyFilter(scroll){
+  $$(".gg-exp").forEach(function(c){ var k = c.getAttribute("data-cat"); c.hidden = !(curFilter==="all" || k==="any" || k===curFilter); });
+  $$(".gg-filter").forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-f")===curFilter ? "true" : "false"); });
+  if (scroll) { var g=$("#gg-exp"); if (g.scrollTo) g.scrollTo({left:0, behavior: reduce?"auto":"smooth"}); }
+}
+
+function renderCrs(){
+  $("#gg-crs").innerHTML = CRS.map(function(c){
+    var mid = "gg-m-" + c.id;
+    return '<article class="gg-crs">'+
+      '<div class="gg-crs-top"><div class="gg-crs-ic">'+svg(c.ic)+'</div><h3>'+esc(L(c.t))+'</h3></div>'+
+      '<p>'+esc(L(c.s))+'</p>'+
+      '<div class="gg-more" id="'+mid+'"><div class="gg-more-in"><p>'+esc(L(c.m))+'</p></div></div>'+
+      '<div class="gg-crs-foot"><div class="gg-crs-data"><span>'+svg("clock")+c.h+' h</span><b><small>'+esc(t("from"))+'</small>'+eur(c.price)+'</b></div>'+
+      '<div class="gg-act">'+moreBtn(mid)+'<button type="button" class="gg-btn gg-btn-p gg-btn-sm" data-wa="book" data-id="'+c.id+'">'+esc(t("book"))+'</button></div></div>'+
+      '</article>';
+  }).join("");
+}
+
+function renderWhy(){
+  $("#gg-why").innerHTML = WHY.map(function(w){ return '<div class="gg-why-i gg-rv">'+svg(w.ic,' stroke-width="1.5"')+'<h3>'+esc(L(w.t))+'</h3><p>'+esc(L(w.x))+'</p></div>'; }).join("");
+}
+
+function renderSteps(){
+  $("#gg-steps").innerHTML = STEPS.map(function(s,i){ return '<li class="gg-step gg-rv"><span class="gg-step-n" aria-hidden="true">'+(i+1)+'</span><h3>'+esc(L(s.t))+'</h3><p>'+esc(L(s.x))+'</p></li>'; }).join("");
+}
+
+function renderCal(){
+  var box = $("#gg-cal");
+  var today = new Date(); today.setHours(0,0,0,0);
+  var list = CALENDARIO.filter(function(c){ return new Date(c.fecha+"T23:59:59") >= today && find(c.id); })
+    .sort(function(a,b){ return a.fecha < b.fecha ? -1 : 1; }).slice(0,8);
+  if (!list.length){
+    box.innerHTML = '<li class="gg-cal-empty"><p>'+esc(t("cal_empty"))+'</p><button type="button" class="gg-btn gg-btn-p gg-btn-sm" data-wa="default" style="margin-top:1rem">'+esc(t("ct_open"))+'</button></li>';
+    return;
+  }
+  box.innerHTML = list.map(function(c){
+    var a = find(c.id), d = new Date(c.fecha+"T12:00:00");
+    var mon = "", long = c.fecha;
+    try { mon = new Intl.DateTimeFormat(LOC[lang], {month:"short"}).format(d).replace(".",""); long = new Intl.DateTimeFormat(LOC[lang], {day:"numeric", month:"long"}).format(d); } catch(e){}
+    var isCourse = CRS.indexOf(a) > -1;
+    var type = isCourse ? t("crs_lbl") : catName(a.cat);
+    var full = c.plazas <= 0;
+    var st = full ? t("cal_full") : (c.plazas===1 ? t("cal_p1") : t("cal_pn").replace("{n}", c.plazas));
+    var cls = full ? "full" : (c.plazas<=2 ? "low" : "");
+    return '<li class="gg-cal-row gg-rv">'+
+      '<div class="gg-cal-date"><b>'+d.getDate()+'</b><span>'+esc(mon)+'</span><small>'+d.getFullYear()+'</small></div>'+
+      '<div class="gg-cal-info"><h3>'+esc(L(a.t))+'</h3><p>'+esc(type)+', '+esc(isCourse ? a.h+" h" : dur(a.dur))+'</p></div>'+
+      '<div class="gg-cal-side"><span class="gg-cal-st '+cls+'">'+esc(st)+'</span>'+
+      '<button type="button" class="gg-btn '+(full?"gg-btn-g":"gg-btn-p")+' gg-btn-sm" data-wa="'+(full?"wait":"cal")+'" data-id="'+c.id+'" data-d="'+esc(long)+'">'+esc(full?t("cal_wait"):t("cal_book"))+'</button></div>'+
+      '</li>';
+  }).join("");
+}
+
+function renderGal(){
+  var g = $("#gg-gal");
+  g.innerHTML = GAL.map(function(x,i){ return '<button type="button" data-gal="'+i+'" aria-label="'+esc(x.alt)+'"><img src="'+U(x.img,700)+'" alt="'+esc(x.alt)+'" loading="lazy"></button>'; }).join("");
+  imgFallback(g);
+}
+
+function renderRev(){
+  $("#gg-sum-stars").innerHTML = stars().replace('<span class="gg-stars" role="img" aria-label="5/5">','').replace(/<\/span>$/,"");
+  $("#gg-score").textContent = num(4.9);
+  $("#gg-rev").innerHTML = REV.map(function(r){
+    var ini = r.n.split(" ").map(function(p){ return p.charAt(0); }).join("").slice(0,2);
+    var a = find(r.act);
+    return '<article class="gg-rev gg-rv">'+
+      '<div class="gg-rev-h"><span class="gg-av" style="background:'+r.c+'" aria-hidden="true">'+esc(ini)+'</span>'+
+      '<div class="gg-rev-who"><b>'+esc(r.n)+TICK.replace("{a}", esc(t("rev_ver")))+'</b>'+stars()+'</div>'+GOOGLE_G+'</div>'+
+      '<p>'+esc(r.txt)+'</p>'+
+      (a ? '<div class="gg-rev-act">'+esc(L(a.t))+'</div>' : '')+
+      '</article>';
+  }).join("");
+}
+
+function renderFaq(){
+  $("#gg-faq-list").innerHTML = FAQ.map(function(f,i){
+    var id = "gg-fa-" + i;
+    return '<li><button class="gg-faq-q" type="button" data-more aria-expanded="false" aria-controls="'+id+'">'+esc(L(f.q))+'<i aria-hidden="true"></i></button>'+
+      '<div class="gg-more" id="'+id+'"><div class="gg-more-in"><p>'+esc(L(f.a))+'</p></div></div></li>';
+  }).join("");
+}
+
+function renderTicker(){
+  var tri = '<svg viewBox="0 0 14 11" fill="currentColor" aria-hidden="true"><path d="M0 11L7 0l7 11z"/></svg>';
+  var one = PEAKS.map(function(p){ return '<span class="gg-tick">'+tri+esc(p[0])+' <b>'+num(p[1])+' m</b></span>'; }).join("");
+  $("#gg-tick").innerHTML = one + one;
+}
+
+function renderSelect(){
+  var sel = $("#gg-f-act"), prev = sel.value;
+  var h = '<option value="">'+esc(t("f_act_ph"))+'</option>';
+  h += '<optgroup label="'+esc(t("exp_t"))+'">' + EXP.map(function(e){ return '<option value="'+e.id+'">'+esc(L(e.t))+'</option>'; }).join("") + '</optgroup>';
+  h += '<optgroup label="'+esc(t("crs_t"))+'">' + CRS.map(function(c){ return '<option value="'+c.id+'">'+esc(L(c.t))+'</option>'; }).join("") + '</optgroup>';
+  h += '<option value="custom">'+esc(t("f_custom"))+'</option>';
+  sel.innerHTML = h; sel.value = prev;
+}
+
+function renderCounters(){
+  $$(".gg-count").forEach(function(el){ if (el.getAttribute("data-done")) el.textContent = num(el.getAttribute("data-count")); });
+}
+
+/* =====================================================================
+   IDIOMA
+   ===================================================================== */
+function setLang(l, save){
+  if (LANGS.indexOf(l) < 0) l = "es";
+  lang = l;
+  root.setAttribute("lang", l);
+  $$("[data-i18n]").forEach(function(el){ var v = t(el.getAttribute("data-i18n")); if (typeof v === "string") el.textContent = v; });
+  $$("[data-i18n-ph]").forEach(function(el){ el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
+  $$("[data-i18n-aria]").forEach(function(el){ el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria"))); });
+  $("#gg-lang-cur").textContent = l.toUpperCase();
+  $$(".gg-lang-menu button").forEach(function(b){ b.setAttribute("aria-current", b.getAttribute("data-lang")===l ? "true" : "false"); });
+  // botón "Leer más" del bloque Sobre mí
+  var ab = $('[aria-controls="gg-about-more"] [data-lbl]');
+  if (ab) ab.textContent = $('[aria-controls="gg-about-more"]').getAttribute("aria-expanded")==="true" ? t("less") : t("more_about");
+  renderTL(); renderExp(); renderCrs(); renderWhy(); renderSteps(); renderCal(); renderRev(); renderFaq(); renderTicker(); renderSelect(); renderCounters();
+  var wa = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(t("wa_default"));
+  $("#gg-wa-btn").setAttribute("href", wa); $("#gg-foot-wa").setAttribute("href", wa);
+  $("#gg-foot-wa").setAttribute("target","_blank"); $("#gg-foot-wa").setAttribute("rel","noopener");
+  observeReveal();
+  if (save){ try { localStorage.setItem("gg-lang", l); } catch(e){} }
+}
+
+/* =====================================================================
+   INTERACCIONES
+   ===================================================================== */
+function toggleMore(btn){
+  var box = document.getElementById(btn.getAttribute("aria-controls"));
+  if (!box) return;
+  var open = btn.getAttribute("aria-expanded") !== "true";
+  btn.setAttribute("aria-expanded", open ? "true" : "false");
+  var lbl = btn.querySelector("[data-lbl]");
+  if (lbl) lbl.textContent = open ? t("less") : (btn.getAttribute("aria-controls")==="gg-about-more" ? t("more_about") : t("more"));
+  if (open){
+    box.style.height = box.scrollHeight + "px";
+    var done = function(){ if (btn.getAttribute("aria-expanded")==="true") box.style.height = "auto"; box.removeEventListener("transitionend", done); };
+    box.addEventListener("transitionend", done);
+    if (reduce) box.style.height = "auto";
+  } else {
+    box.style.height = box.scrollHeight + "px";
+    box.offsetHeight; // reflow
+    box.style.height = "0px";
+  }
+}
+
+root.addEventListener("click", function(e){
+  var el;
+  // Leer más / FAQ
+  if ((el = e.target.closest("[data-more]"))) { toggleMore(el); return; }
+  // Filtros
+  if ((el = e.target.closest("[data-f]"))) { curFilter = el.getAttribute("data-f"); applyFilter(true); return; }
+  // WhatsApp
+  if ((el = e.target.closest("[data-wa]"))) {
+    var kind = el.getAttribute("data-wa"), a = find(el.getAttribute("data-id"));
+    var name = a ? L(a.t) : "";
+    if (kind==="book") waOpen(fill(t("wa_book"), name));
+    else if (kind==="cal") waOpen(fill(t("wa_cal"), name, el.getAttribute("data-d")));
+    else if (kind==="wait") waOpen(fill(t("wa_wait"), name, el.getAttribute("data-d")));
+    else waOpen(t("wa_default"));
+    return;
+  }
+  // Idioma
+  if ((el = e.target.closest("[data-lang]"))) { setLang(el.getAttribute("data-lang"), true); closeLang(); return; }
+  if ((el = e.target.closest(".gg-lang-btn"))) { var w = $("#gg-lang"); var o = !w.classList.contains("open"); w.classList.toggle("open", o); el.setAttribute("aria-expanded", o); return; }
+  // Galería
+  if ((el = e.target.closest("[data-gal]"))) { openLb(+el.getAttribute("data-gal")); return; }
+  if ((el = e.target.closest("[data-lb]"))) { var k = el.getAttribute("data-lb"); if (k==="x") closeLb(); else stepLb(k==="n"?1:-1); return; }
+  if (e.target.id === "gg-lb") { closeLb(); return; }
+  // Anclas internas con desplazamiento suave
+  if ((el = e.target.closest('a[href^="#gg-"]'))) {
+    var target = document.getElementById(el.getAttribute("href").slice(1));
+    if (target){ e.preventDefault(); closeMenu(); var hh = $("#gg-hdr").offsetHeight; window.scrollTo({top: target.getBoundingClientRect().top + window.pageYOffset - (target.id==="gg-inicio"?0:hh-1), behavior: reduce?"auto":"smooth"}); }
+  }
+});
+document.addEventListener("click", function(e){ if (!e.target.closest || !e.target.closest("#gg-lang")) closeLang(); });
+document.addEventListener("keydown", function(e){ if (e.key==="Escape"){ closeLang(); closeMenu(); closeLb(); } if ($("#gg-lb").classList.contains("open")){ if (e.key==="ArrowRight") stepLb(1); if (e.key==="ArrowLeft") stepLb(-1); } });
+function closeLang(){ var w=$("#gg-lang"); w.classList.remove("open"); $(".gg-lang-btn").setAttribute("aria-expanded","false"); }
+
+/* Menú móvil */
+var burger = $("#gg-burger"), mnav = $("#gg-mnav");
+burger.addEventListener("click", function(){ var o = !mnav.classList.contains("open"); mnav.classList.toggle("open", o); burger.setAttribute("aria-expanded", o); document.body.style.overflow = o ? "hidden" : ""; onScroll(); });
+function closeMenu(){ if (!mnav.classList.contains("open")) return; mnav.classList.remove("open"); burger.setAttribute("aria-expanded","false"); document.body.style.overflow=""; }
+
+/* Visor de galería */
+var lbI = 0, lb = $("#gg-lb");
+function openLb(i){ lbI = i; showLb(); lb.classList.add("open"); document.body.style.overflow="hidden"; $(".gg-lb-x").focus(); }
+function showLb(){ var x = GAL[lbI]; $("#gg-lb-img").src = U(x.img, 1600); $("#gg-lb-img").alt = x.alt; $("#gg-lb-cap").textContent = x.alt; }
+function stepLb(d){ lbI = (lbI + d + GAL.length) % GAL.length; showLb(); }
+function closeLb(){ if (!lb.classList.contains("open")) return; lb.classList.remove("open"); document.body.style.overflow=""; }
+var tx = null;
+lb.addEventListener("touchstart", function(e){ tx = e.touches[0].clientX; }, {passive:true});
+lb.addEventListener("touchend", function(e){ if (tx===null) return; var dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) stepLb(dx<0?1:-1); tx = null; });
+
+/* Formulario a WhatsApp */
+$("#gg-form").addEventListener("submit", function(e){
+  e.preventDefault();
+  var name = $("#gg-f-name").value.trim(), act = $("#gg-f-act").value, err = $("#gg-form-err");
+  if (!name || !act){ err.textContent = t("f_err"); (name ? $("#gg-f-act") : $("#gg-f-name")).focus(); return; }
+  err.textContent = "";
+  var a = find(act), actName = a ? L(a.t) : t("f_custom");
+  var lines = [fill(t("wa_hi"), name), fill(t("wa_act"), actName)];
+  var dv = $("#gg-f-date").value;
+  if (dv){ var dd = new Date(dv+"T12:00:00"); try { dv = new Intl.DateTimeFormat(LOC[lang], {day:"numeric", month:"long", year:"numeric"}).format(dd); } catch(x){} lines.push(fill(t("wa_date"), dv)); }
+  var pv = $("#gg-f-ppl"); lines.push(fill(t("wa_ppl"), pv.options[pv.selectedIndex].text));
+  var msg = $("#gg-f-msg").value.trim(); if (msg){ lines.push(""); lines.push(msg); }
+  waOpen(lines.join("\n"));
+});
+(function(){ var d = new Date(), m = ("0"+(d.getMonth()+1)).slice(-2), dd = ("0"+d.getDate()).slice(-2); $("#gg-f-date").setAttribute("min", d.getFullYear()+"-"+m+"-"+dd); $("#gg-year").textContent = d.getFullYear(); })();
+
+/* Inclinación 3D suave en tarjetas (solo ratón) */
+function bindTilt(){
+  if (reduce || !window.matchMedia("(hover:hover) and (pointer:fine) and (min-width:760px)").matches) return;
+  $$(".gg-exp").forEach(function(c){
+    c.addEventListener("mousemove", function(e){ var r = c.getBoundingClientRect(); var rx = ((e.clientY-r.top)/r.height - .5) * -5, ry = ((e.clientX-r.left)/r.width - .5) * 5; c.style.transform = "perspective(900px) rotateX("+rx+"deg) rotateY("+ry+"deg) translateY(-4px)"; });
+    c.addEventListener("mouseleave", function(){ c.style.transform = ""; });
+  });
+}
+
+/* Curvas de nivel generadas */
+function topo(el, k){
+  var cx = [640,300,780,220,520,700][k%6], cy = [380,620,300,420,520,260][k%6];
+  var paths = "", i, a, n = 72;
+  for (i=0;i<14;i++){
+    var r = 50 + i*48, d = "";
+    for (a=0;a<=n;a++){
+      var th = a/n*Math.PI*2;
+      var rr = r * (1 + .17*Math.sin(3*th + k + i*.12) + .08*Math.sin(5*th + k*2 + i*.3) + .04*Math.sin(9*th + i));
+      d += (a?"L":"M") + (cx + rr*Math.cos(th)).toFixed(1) + " " + (cy + rr*.78*Math.sin(th)).toFixed(1);
+    }
+    paths += '<path d="'+d+'Z"/>';
+  }
+  el.setAttribute("viewBox","0 0 1000 1000"); el.setAttribute("preserveAspectRatio","xMidYMid slice");
+  el.innerHTML = '<g fill="none" stroke="currentColor" stroke-width="1.1">'+paths+'</g>';
+}
+$$("[data-topo]").forEach(function(el){ topo(el, +el.getAttribute("data-topo")); });
+
+/* Aparición al hacer scroll */
+var io = ("IntersectionObserver" in window) ? new IntersectionObserver(function(es){ es.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add("on"); io.unobserve(en.target); } }); }, {threshold:.12, rootMargin:"0px 0px -40px 0px"}) : null;
+function observeReveal(){ $$(".gg-rv:not(.on)").forEach(function(el){ if (io) io.observe(el); else el.classList.add("on"); }); }
+
+/* Contadores */
+var cio = ("IntersectionObserver" in window) ? new IntersectionObserver(function(es){
+  es.forEach(function(en){
+    if (!en.isIntersecting) return; var el = en.target, end = +el.getAttribute("data-count"), t0 = performance.now();
+    cio.unobserve(el);
+    if (reduce){ el.textContent = num(end); el.setAttribute("data-done","1"); return; }
+    (function tick(now){ var p = Math.min((now - t0)/1600, 1), v = Math.round(end * (1 - Math.pow(1-p, 3))); el.textContent = num(v); if (p < 1) requestAnimationFrame(tick); else el.setAttribute("data-done","1"); })(t0);
+  });
+}, {threshold:.6}) : null;
+$$(".gg-count").forEach(function(el){ if (cio){ el.textContent = "0"; cio.observe(el); } else { el.setAttribute("data-done","1"); } });
+
+/* Cabecera, barra de progreso, altímetro y parallax */
+var hdr = $("#gg-hdr"), prog = $("#gg-prog"), railM = $("#gg-rail-m"), altEl = $("#gg-alt"), heroImg = $("#gg-hero-img");
+var secs = $$("[data-alt]"), ticking = false;
+function onScroll(){
+  var y = window.pageYOffset, vh = window.innerHeight;
+  hdr.classList.toggle("solid", y > 30 || mnav.classList.contains("open"));
+  var top = root.getBoundingClientRect().top + y, h = root.offsetHeight;
+  var p = Math.max(0, Math.min(1, (y - top) / Math.max(1, h - vh)));
+  prog.style.transform = "scaleX(" + p + ")";
+  // altitud interpolada entre secciones
+  var mid = y + vh*.5, alt = +secs[0].getAttribute("data-alt"), i;
+  for (i=0;i<secs.length;i++){
+    var s = secs[i], st = s.getBoundingClientRect().top + y, a0 = +s.getAttribute("data-alt");
+    var nx = secs[i+1], a1 = nx ? +nx.getAttribute("data-alt") : a0, en = st + s.offsetHeight;
+    if (mid >= st && mid < en){ alt = a0 + (a1 - a0) * ((mid - st) / Math.max(1, en - st)); break; }
+    if (mid >= en) alt = a1;
+  }
+  altEl.textContent = num(Math.round(alt)) + " m";
+  railM.style.top = ((1 - p) * 100) + "%";
+  if (!reduce && heroImg && y < vh*1.2) heroImg.style.transform = "translate3d(0," + (y*.28).toFixed(1) + "px,0)";
+  ticking = false;
+}
+window.addEventListener("scroll", function(){ if (!ticking){ ticking = true; requestAnimationFrame(onScroll); } }, {passive:true});
+window.addEventListener("resize", onScroll, {passive:true});
+
+/* Burbuja del botón de WhatsApp (una vez por visita) */
+(function(){
+  var shown = false; try { shown = sessionStorage.getItem("gg-wa") === "1"; } catch(e){}
+  if (shown) return;
+  setTimeout(function(){ var w = $("#gg-wa"); w.classList.add("show"); setTimeout(function(){ w.classList.remove("show"); }, 5500); try { sessionStorage.setItem("gg-wa","1"); } catch(e){} }, 5000);
+})();
+
+/* Arranque */
+var saved = null; try { saved = localStorage.getItem("gg-lang"); } catch(e){}
+var nav = (navigator.language || "es").slice(0,2).toLowerCase();
+renderGal();
+setLang(saved || (LANGS.indexOf(nav) > -1 ? nav : "es"), false);
+onScroll();
+})();
+</script>
